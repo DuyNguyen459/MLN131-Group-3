@@ -11,25 +11,26 @@ export default function App() {
       {/* Fixed Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
-      <main>
-        <HeroSection />
-        <BranchesSection />
-        <FeedbackPortal />
-        <QuizDashboard />
-        <TransparencyHub />
+      {/* Main Content and Footer wrapper with standard pl-0 md:pl-[68px] to offset sidebar */}
+      <div className="pl-0 md:pl-[68px] flex flex-col min-h-screen">
+        <main className="flex-grow">
+          <HeroSection />
+          <BranchesSection />
+          <FeedbackPortal />
+          <QuizDashboard />
+          <TransparencyHub />
+        </main>
 
         {/* Footer */}
         <footer
-          className="text-center py-8"
+          className="text-center py-10"
           style={{
-            paddingLeft: 68,
             borderTop: '1px solid var(--border)',
             background: 'var(--bg-secondary)',
           }}
         >
           <p
-            className="text-sm font-semibold mb-1"
+            className="text-sm font-semibold mb-1.5"
             style={{ color: 'var(--accent-gold)', fontFamily: 'var(--font-heading)' }}
           >
             Hành trình Pháp quyền
@@ -38,10 +39,10 @@ export default function App() {
             MLN131 — Nhóm 3 | Dân chủ XHCN & Nhà nước Pháp quyền Việt Nam
           </p>
           <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
-            © 2024 — Mockup phục vụ thuyết trình học thuật
+            © 2026 — Mockup phục vụ thuyết trình học thuật
           </p>
         </footer>
-      </main>
+      </div>
     </div>
   );
 }

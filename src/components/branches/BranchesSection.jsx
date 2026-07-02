@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Landmark, Building2, Scale, ChevronDown, LayoutGrid, Network, Columns4, Sparkles } from 'lucide-react';
+import { Landmark, Building2, Scale, ChevronDown, LayoutGrid, Network, Columns4, Sparkles, Star } from 'lucide-react';
 import SectionWrapper from '../layout/SectionWrapper';
 import LegislativePanel from './LegislativePanel';
 import ExecutivePanel from './ExecutivePanel';
@@ -69,7 +69,7 @@ export default function BranchesSection() {
 
   return (
     <SectionWrapper id="branches">
-      <div className="section-container" style={{ paddingLeft: 92 }}>
+      <div className="section-container">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
@@ -253,14 +253,18 @@ export default function BranchesSection() {
             >
               {/* LEFT COLUMN: Visual Dong Son Drum Hub */}
               <div className="lg:col-span-5 glass-panel p-6 flex flex-col items-center justify-center relative min-h-[450px] overflow-hidden">
-                <motion.div
+                {/* Positional wrapper to prevent transform conflict */}
+                <div 
                   className="absolute"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 120, repeat: Infinity, ease: 'linear' }}
                   style={{ top: 'calc(50% + 20px)', left: '50%', transform: 'translate(-50%, -50%)' }}
                 >
-                  <DongSonDrum size={220} className="opacity-70" />
-                </motion.div>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 120, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <DongSonDrum size={220} className="opacity-70" />
+                  </motion.div>
+                </div>
 
                 {/* Connection lines */}
                 <svg
@@ -308,37 +312,43 @@ export default function BranchesSection() {
                   const isActive = expandedBranch === branch.id;
 
                   return (
-                    <motion.button
+                    <div
                       key={branch.id}
-                      className="absolute flex flex-col items-center p-3 rounded-2xl cursor-pointer transition-all"
+                      className="absolute pointer-events-none"
                       style={{
-                        background: isActive ? branch.dimColor : 'var(--bg-card)',
-                        border: `1px solid ${isActive ? branch.color : 'var(--glass-border)'}`,
-                        top: '50%',
+                        top: 'calc(50% + 20px)',
                         left: '50%',
                         transform: `translate(calc(-50% + ${branch.x}px), calc(-50% + ${branch.y}px))`,
-                        boxShadow: isActive ? `0 0 25px ${branch.dimColor}` : 'none',
                         zIndex: 10,
                       }}
-                      whileHover={{ scale: 1.05, borderColor: branch.color }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleToggle(branch.id)}
                     >
-                      <div
-                        className="rounded-xl p-2.5 mb-1.5"
+                      <motion.button
+                        className="pointer-events-auto flex flex-col items-center p-3 rounded-2xl cursor-pointer w-24"
                         style={{
-                          background: isActive ? branch.dimColor : 'rgba(255, 255, 255, 0.03)',
+                          background: isActive ? branch.dimColor : 'var(--bg-card)',
+                          border: `1px solid ${isActive ? branch.color : 'var(--glass-border)'}`,
+                          boxShadow: isActive ? `0 0 25px ${branch.dimColor}` : 'none',
                         }}
+                        whileHover={{ scale: 1.08, borderColor: branch.color }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleToggle(branch.id)}
                       >
-                        <Icon size={22} style={{ color: branch.color }} />
-                      </div>
-                      <span className="text-xs font-bold text-center" style={{ color: isActive ? branch.color : 'var(--text-primary)' }}>
-                        {branch.title}
-                      </span>
-                      <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
-                        {branch.subtitle}
-                      </span>
-                    </motion.button>
+                        <div
+                          className="rounded-xl p-2 mb-1"
+                          style={{
+                            background: isActive ? branch.dimColor : 'rgba(255, 255, 255, 0.03)',
+                          }}
+                        >
+                          <Icon size={20} style={{ color: branch.color }} />
+                        </div>
+                        <span className="text-[11px] font-bold text-center" style={{ color: isActive ? branch.color : 'var(--text-primary)' }}>
+                          {branch.title}
+                        </span>
+                        <span className="text-[8px]" style={{ color: 'var(--text-muted)' }}>
+                          {branch.subtitle}
+                        </span>
+                      </motion.button>
+                    </div>
                   );
                 })}
 

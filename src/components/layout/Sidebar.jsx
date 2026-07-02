@@ -18,7 +18,7 @@ export default function Sidebar() {
 
   return (
     <motion.nav
-      className="fixed left-0 top-0 h-screen z-50 flex flex-col"
+      className="fixed left-0 top-0 h-screen z-50 hidden md:flex flex-col"
       style={{
         background: 'var(--bg-elevated)',
         borderRight: '1px solid var(--glass-border)',

@@ -31,7 +31,7 @@ export default function TransparencyHub() {
           borderTop: '1px solid var(--border)',
         }}
       >
-        <div className="section-container" style={{ paddingLeft: 92 }}>
+        <div className="section-container">
           {/* Header */}
           <div className="text-center mb-12">
             <span className="badge badge-gold mb-3 inline-flex">

@@ -25,7 +25,7 @@ export default function QuizDashboard() {
 
   return (
     <SectionWrapper id="quiz">
-      <div className="section-container" style={{ paddingLeft: 92 }}>
+      <div className="section-container">
         {/* Header */}
         <div className="text-center mb-10">
           <span className="badge badge-gold mb-3 inline-flex">

@@ -140,7 +140,6 @@ export default function HeroSection() {
     <section
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg"
-      style={{ paddingLeft: 68 }}
     >
       {/* Background radial spots */}
       <div

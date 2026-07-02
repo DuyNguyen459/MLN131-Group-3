@@ -125,7 +125,7 @@ export default function FeedbackPortal() {
 
   return (
     <SectionWrapper id="feedback">
-      <div className="section-container" style={{ paddingLeft: 92 }}>
+      <div className="section-container">
         {/* Header */}
         <div className="text-center mb-12">
           <span className="badge badge-teal mb-3 inline-flex">
