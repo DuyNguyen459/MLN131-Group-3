@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ScrollText, Users, Star, ChevronRight, FileText } from 'lucide-react';
+import { Bot, ChevronRight, FileText, Gamepad2, Landmark, ScrollText, Star, Users } from 'lucide-react';
 import { sidebarSections, nghiQuyetCard } from '../../data/mockData';
 
 const iconMap = {
-  ScrollText: ScrollText,
-  Users: Users,
+  Bot,
+  Gamepad2,
+  Landmark,
+  ScrollText,
+  Users,
 };
 
 export default function Sidebar() {
@@ -18,165 +21,106 @@ export default function Sidebar() {
 
   return (
     <motion.nav
-      className="fixed left-0 top-0 h-screen z-50 hidden md:flex flex-col"
+      className="sidebar-shell fixed left-0 top-0 h-screen z-50 hidden md:flex flex-col"
       style={{
         background: 'var(--bg-elevated)',
         borderRight: '1px solid var(--glass-border)',
       }}
       initial={false}
-      animate={{ width: isExpanded ? 300 : 68 }}
-      transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+      animate={{ width: isExpanded ? 316 : 68 }}
+      transition={{ duration: 0.32, ease: [0.25, 0.1, 0.25, 1] }}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
-      {/* Emblem */}
-      <div
-        className="flex items-center justify-center py-6 px-3"
-        style={{ borderBottom: '1px solid var(--border)' }}
-      >
-        <motion.div
-          className="flex items-center justify-center rounded-xl"
-          style={{
-            width: 44,
-            height: 44,
-            minWidth: 44,
-            background: 'linear-gradient(135deg, var(--accent-gold), var(--accent-bronze))',
-          }}
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <Star size={24} color="#0A0F1E" fill="#0A0F1E" />
+      <div className="sidebar-brand">
+        <motion.div className="sidebar-logo" whileHover={{ scale: 1.06 }} transition={{ type: 'spring', stiffness: 300 }}>
+          <Star size={23} color="#fff8df" fill="#fff8df" />
         </motion.div>
+
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              className="ml-3 overflow-hidden whitespace-nowrap"
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.25 }}
+              className="ml-3 min-w-0"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.2 }}
             >
-              <p
-                className="text-sm font-bold"
-                style={{ color: 'var(--accent-gold)' }}
-              >
-                Đảng Lãnh đạo
+              <p className="text-sm font-bold leading-tight" style={{ color: 'var(--accent-red)' }}>
+                Pháp quyền XHCN
               </p>
-              <p
-                className="text-xs"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                Hệ điều hành
+              <p className="text-xs mt-1 leading-snug" style={{ color: 'var(--text-muted)' }}>
+                Hành trình học thuật
               </p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Navigation Items */}
-      <div className="flex-1 py-4 px-2 flex flex-col gap-1">
+      <div className="flex-1 py-4 px-2 flex flex-col gap-2">
         {sidebarSections.map((section) => {
           const Icon = iconMap[section.icon];
           return (
             <motion.button
               key={section.id}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl w-full text-left cursor-pointer"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--text-secondary)',
-              }}
-              whileHover={{
-                backgroundColor: 'rgba(212, 168, 83, 0.08)',
-                color: 'var(--accent-gold-light)',
-              }}
+              className="sidebar-item"
+              whileHover={{ backgroundColor: 'var(--accent-gold-dim)' }}
               transition={{ duration: 0.2 }}
               onClick={() => handleScrollTo(section.id)}
             >
               <div
                 className="flex items-center justify-center rounded-lg"
-                style={{
-                  width: 40,
-                  height: 40,
-                  minWidth: 40,
-                  background: 'var(--accent-gold-dim)',
-                }}
+                style={{ width: 40, height: 40, minWidth: 40, background: 'rgba(185, 138, 34, 0.14)' }}
               >
-                {Icon && <Icon size={20} style={{ color: 'var(--accent-gold)' }} />}
+                {Icon && <Icon size={19} style={{ color: 'var(--accent-red)' }} />}
               </div>
+
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
-                    className="overflow-hidden whitespace-nowrap flex-1"
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: 'auto' }}
-                    exit={{ opacity: 0, width: 0 }}
-                    transition={{ duration: 0.2 }}
+                    className="sidebar-copy"
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -6 }}
+                    transition={{ duration: 0.18 }}
                   >
-                    <p className="text-sm font-semibold">{section.title}</p>
-                    <p
-                      className="text-xs"
-                      style={{ color: 'var(--text-muted)' }}
-                    >
-                      {section.description}
-                    </p>
+                    <p>{section.title}</p>
+                    <p>{section.description}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
-              {isExpanded && (
-                <ChevronRight size={16} style={{ color: 'var(--text-muted)' }} />
-              )}
+
+              {isExpanded && <ChevronRight size={15} style={{ color: 'var(--text-muted)', justifySelf: 'end' }} />}
             </motion.button>
           );
         })}
       </div>
 
-      {/* Nghị quyết 27 Card */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
-            className="mx-3 mb-4 p-4 rounded-xl"
+            className="mx-3 mb-4 p-4 rounded-lg"
             style={{
-              background:
-                'linear-gradient(135deg, rgba(212, 168, 83, 0.12), rgba(184, 115, 51, 0.08))',
-              border: '1px solid rgba(212, 168, 83, 0.25)',
+              background: 'linear-gradient(135deg, rgba(163, 38, 42, 0.10), rgba(185, 138, 34, 0.12))',
+              border: '1px solid rgba(185, 138, 34, 0.25)',
             }}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.22 }}
           >
             <div className="flex items-center gap-2 mb-2">
-              <FileText size={16} style={{ color: 'var(--accent-gold)' }} />
-              <span
-                className="text-xs font-bold uppercase tracking-wider"
-                style={{ color: 'var(--accent-gold)' }}
-              >
+              <FileText size={16} style={{ color: 'var(--accent-red)' }} />
+              <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--accent-red)' }}>
                 Trọng tâm
               </span>
             </div>
-            <h4
-              className="text-sm font-bold mb-1"
-              style={{ color: 'var(--accent-gold-light)' }}
-            >
+            <h4 className="text-sm font-bold mb-1 leading-snug" style={{ color: 'var(--text-primary)' }}>
               {nghiQuyetCard.title}
             </h4>
-            <p
-              className="text-xs leading-relaxed"
-              style={{ color: 'var(--text-secondary)' }}
-            >
+            <p className="text-xs" style={{ color: 'var(--text-secondary)', lineHeight: 1.58 }}>
               {nghiQuyetCard.content}
             </p>
-            <div className="mt-3 flex flex-wrap gap-1">
-              {nghiQuyetCard.highlights.slice(0, 3).map((h, i) => (
-                <span
-                  key={i}
-                  className="badge badge-gold text-[10px]"
-                >
-                  {h}
-                </span>
-              ))}
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

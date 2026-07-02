@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Trophy, Clock, Star } from 'lucide-react';
+import { Clock, Star } from 'lucide-react';
 import { leaderboardData } from '../../data/mockData';
 
 const medalColors = {

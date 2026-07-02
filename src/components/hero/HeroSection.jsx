@@ -1,96 +1,9 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Landmark, Building2, Scale, ArrowDown } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowDown, Building2, Landmark, Scale, ShieldCheck, Zap } from 'lucide-react';
+import DongSonDrum from '../common/DongSonDrum';
+import heroImage from '../../assets/hero.png';
 
-/* Inline SVG Dong Son Drum — concentric circles with geometric pattern */
-function DongSonDrum({ size = 280 }) {
-  return (
-    <svg
-      viewBox="0 0 300 300"
-      width={size}
-      height={size}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Outermost ring */}
-      <circle cx="150" cy="150" r="145" stroke="var(--accent-bronze)" strokeWidth="2" opacity="0.4" />
-      <circle cx="150" cy="150" r="130" stroke="var(--accent-gold)" strokeWidth="1.5" opacity="0.5" />
-
-      {/* Geometric band — simplified Dong Son pattern */}
-      {Array.from({ length: 24 }).map((_, i) => {
-        const angle = (i * 15 * Math.PI) / 180;
-        const x1 = 150 + 115 * Math.cos(angle);
-        const y1 = 150 + 115 * Math.sin(angle);
-        const x2 = 150 + 128 * Math.cos(angle);
-        const y2 = 150 + 128 * Math.sin(angle);
-        return (
-          <line
-            key={`ray-${i}`}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="var(--accent-gold)"
-            strokeWidth="1.5"
-            opacity="0.6"
-          />
-        );
-      })}
-
-      {/* Second decorative ring */}
-      <circle cx="150" cy="150" r="110" stroke="var(--accent-bronze)" strokeWidth="2.5" opacity="0.5" />
-      <circle cx="150" cy="150" r="100" stroke="var(--accent-gold)" strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
-
-      {/* Inner geometric pattern — stylized birds */}
-      {Array.from({ length: 8 }).map((_, i) => {
-        const angle = (i * 45 * Math.PI) / 180;
-        const cx = 150 + 85 * Math.cos(angle);
-        const cy = 150 + 85 * Math.sin(angle);
-        return (
-          <g key={`bird-${i}`} transform={`translate(${cx}, ${cy}) rotate(${i * 45 + 90})`}>
-            <path
-              d="M-8,-3 Q0,-10 8,-3 Q5,0 0,5 Q-5,0 -8,-3Z"
-              fill="var(--accent-gold)"
-              opacity="0.5"
-            />
-          </g>
-        );
-      })}
-
-      {/* Middle rings */}
-      <circle cx="150" cy="150" r="65" stroke="var(--accent-gold)" strokeWidth="2" opacity="0.6" />
-      <circle cx="150" cy="150" r="55" stroke="var(--accent-bronze)" strokeWidth="1.5" opacity="0.4" />
-
-      {/* Inner triangular pattern */}
-      {Array.from({ length: 12 }).map((_, i) => {
-        const angle = (i * 30 * Math.PI) / 180;
-        const x = 150 + 48 * Math.cos(angle);
-        const y = 150 + 48 * Math.sin(angle);
-        return (
-          <circle
-            key={`dot-${i}`}
-            cx={x}
-            cy={y}
-            r="2.5"
-            fill="var(--accent-gold)"
-            opacity="0.7"
-          />
-        );
-      })}
-
-      {/* Center star */}
-      <circle cx="150" cy="150" r="30" stroke="var(--accent-gold)" strokeWidth="2.5" opacity="0.8" />
-      <circle cx="150" cy="150" r="18" fill="var(--accent-gold)" opacity="0.15" />
-      <polygon
-        points="150,134 154,146 167,146 157,154 160,166 150,158 140,166 143,154 133,146 146,146"
-        fill="var(--accent-gold)"
-        opacity="0.9"
-      />
-    </svg>
-  );
-}
-
-/* Branch nodes that fly out from the drum */
 const branchNodes = [
   {
     id: 'lap-phap',
@@ -98,9 +11,8 @@ const branchNodes = [
     subtitle: 'Quốc hội',
     icon: Landmark,
     color: 'var(--accent-gold)',
-    bgColor: 'var(--accent-gold-dim)',
-    x: -320,
-    y: -60,
+    className: 'hero-orbit-node left',
+    path: 'M250,248 C205,258 166,280 134,314',
   },
   {
     id: 'hanh-phap',
@@ -108,19 +20,17 @@ const branchNodes = [
     subtitle: 'Chính phủ',
     icon: Building2,
     color: 'var(--accent-teal)',
-    bgColor: 'var(--accent-teal-dim)',
-    x: 0,
-    y: -200,
+    className: 'hero-orbit-node top',
+    path: 'M300,210 C300,170 300,135 300,104',
   },
   {
     id: 'tu-phap',
     label: 'Tư pháp',
-    subtitle: 'Tòa án',
+    subtitle: 'Tòa án, Viện kiểm sát',
     icon: Scale,
     color: 'var(--accent-red)',
-    bgColor: 'var(--accent-red-dim)',
-    x: 320,
-    y: -60,
+    className: 'hero-orbit-node right',
+    path: 'M350,248 C395,258 434,280 466,314',
   },
 ];
 
@@ -129,222 +39,124 @@ export default function HeroSection() {
 
   const handleActivate = () => {
     setIsActivated(true);
-    // After animation, scroll to branches
     setTimeout(() => {
       const el = document.getElementById('branches');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 2800);
+    }, 900);
   };
 
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg"
-    >
-      {/* Background radial spots */}
-      <div
-        className="radial-spot-gold"
-        style={{ top: '-10%', left: '20%' }}
-      />
-      <div
-        className="radial-spot-teal"
-        style={{ bottom: '-10%', right: '15%' }}
-      />
+    <section id="hero" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden hero-stage">
+      <img src={heroImage} alt="" className="hero-image" />
+      <div className="hero-scrim" />
 
-      {/* Content */}
-      <div className="relative z-10 text-center flex flex-col items-center">
-        {/* Title — always visible */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-4"
-        >
-          <span
-            className="badge badge-gold mb-6 inline-flex"
-            style={{ fontSize: '0.8rem', padding: '6px 16px' }}
+      <div className="relative z-10 section-container hero-container w-full">
+        <div className="hero-layout">
+          <motion.div
+            className="hero-copy-block"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65 }}
           >
-            MLN131 — Nhóm 3
-          </span>
-        </motion.div>
+            <span className="badge badge-gold mb-4 inline-flex">MLN131 - Nhóm 3</span>
+            <h1 className="hero-title">Dân chủ XHCN và Nhà nước pháp quyền Việt Nam</h1>
+            <p className="hero-copy">
+              Hành trình trình bày mô hình Nhà nước của Nhân dân, do Nhân dân, vì Nhân dân:
+              quyền lực nhà nước thống nhất, có phân công, phối hợp và kiểm soát.
+            </p>
 
-        <motion.h1
-          className="text-5xl md:text-7xl font-black mb-4 glow-text-red"
-          style={{
-            color: 'var(--accent-red)',
-            fontFamily: 'var(--font-heading)',
-            letterSpacing: '-0.02em',
-          }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          Hành trình Pháp quyền
-        </motion.h1>
+            <div className="hero-facts">
+              <div>
+                <ShieldCheck size={18} />
+                <span>Hiến pháp hiện hành</span>
+              </div>
+              <div>
+                <Landmark size={18} />
+                <span>Nghị quyết 27-NQ/TW</span>
+              </div>
+              <div>
+                <Scale size={18} />
+                <span>Không dùng “tam quyền phân lập”</span>
+              </div>
+            </div>
 
-        <motion.p
-          className="text-lg md:text-xl mb-10 max-w-2xl"
-          style={{ color: 'var(--text-secondary)' }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          Dân chủ Xã hội Chủ nghĩa & Nhà nước Pháp quyền Việt Nam
-        </motion.p>
+            <motion.button className="hero-cta" whileHover={{ scale: 1.025 }} whileTap={{ scale: 0.97 }} onClick={handleActivate}>
+              <Zap size={20} />
+              {isActivated ? 'Đang mở hệ thống' : 'Khởi động hành trình'}
+            </motion.button>
+          </motion.div>
 
-        {/* Drum + Activation area */}
-        <div className="relative" style={{ minHeight: 400 }}>
-          <AnimatePresence mode="wait">
-            {!isActivated ? (
-              /* Pre-activation: Drum + Button */
-              <motion.div
-                key="pre"
-                className="flex flex-col items-center"
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.div
+          <motion.div
+            className="hero-orbit"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            <svg className="hero-orbit-svg" viewBox="0 0 600 520" aria-hidden="true">
+              <circle cx="300" cy="270" r="146" fill="none" stroke="rgba(228,190,82,0.18)" strokeWidth="1.5" />
+              <circle cx="300" cy="270" r="182" fill="none" stroke="rgba(255,248,226,0.08)" strokeWidth="1" strokeDasharray="10 12" />
+              {branchNodes.map((node, i) => (
+                <motion.path
+                  key={node.id}
+                  d={node.path}
+                  fill="none"
+                  stroke={node.color}
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
                   animate={{
-                    rotate: [0, 360],
+                    pathLength: 1,
+                    opacity: isActivated ? 0.78 : 0.46,
+                    strokeDashoffset: isActivated ? [0, -24] : 0,
                   }}
                   transition={{
-                    rotate: { duration: 60, repeat: Infinity, ease: 'linear' },
+                    pathLength: { duration: 0.6, delay: 0.3 + i * 0.08 },
+                    opacity: { duration: 0.25 },
+                    strokeDashoffset: { duration: 1.1, repeat: isActivated ? Infinity : 0, ease: 'linear' },
                   }}
-                  className="mb-8"
-                >
-                  <DongSonDrum size={240} />
-                </motion.div>
+                  strokeDasharray={isActivated ? '7 8' : '0'}
+                />
+              ))}
+            </svg>
 
-                <motion.button
-                  className="flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-lg cursor-pointer"
-                  style={{
-                    background:
-                      'linear-gradient(135deg, var(--accent-red), var(--accent-bronze))',
-                    color: 'var(--bg-primary)',
-                    border: '1px solid var(--accent-gold-light)',
-                    fontFamily: 'var(--font-heading)',
-                  }}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: '0 0 40px rgba(179, 8, 8, 0.4)',
-                  }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleActivate}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  <Zap size={22} style={{ color: 'var(--accent-gold-light)' }} />
-                  Khởi động hệ thống
-                </motion.button>
-              </motion.div>
-            ) : (
-              /* Post-activation: Drum expands → branch nodes fly out */
-              <motion.div
-                key="post"
-                className="flex flex-col items-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                {/* Central drum pulsing then shrinking */}
+            <motion.div
+              className="hero-drum-core"
+              animate={{ scale: isActivated ? [1, 1.035, 1] : 1 }}
+              transition={{ duration: 1.2, repeat: isActivated ? Infinity : 0 }}
+            >
+              <DongSonDrum size={260} />
+            </motion.div>
+
+            {branchNodes.map((node, i) => {
+              const Icon = node.icon;
+              return (
                 <motion.div
-                  initial={{ scale: 1 }}
-                  animate={{
-                    scale: [1, 1.3, 0.6],
-                    opacity: [1, 1, 0.6],
-                  }}
-                  transition={{ duration: 1.5, times: [0, 0.4, 1] }}
-                  className="relative"
+                  key={node.id}
+                  className={node.className}
+                  style={{ borderColor: node.color }}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.45 + i * 0.08 }}
                 >
-                  <DongSonDrum size={200} />
+                  <Icon size={23} style={{ color: node.color, flexShrink: 0 }} />
+                  <div>
+                    <p style={{ color: node.color }}>{node.label}</p>
+                    <span>{node.subtitle}</span>
+                  </div>
                 </motion.div>
+              );
+            })}
 
-                {/* Branch nodes flying out */}
-                {branchNodes.map((node, i) => {
-                  const Icon = node.icon;
-                  return (
-                    <motion.div
-                      key={node.id}
-                      className="absolute flex items-center gap-3 px-5 py-4 rounded-2xl"
-                      style={{
-                        background: node.bgColor,
-                        border: `1px solid ${node.color}`,
-                        top: '50%',
-                        left: '50%',
-                      }}
-                      initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
-                      animate={{
-                        x: node.x,
-                        y: node.y,
-                        opacity: 1,
-                        scale: 1,
-                      }}
-                      transition={{
-                        duration: 0.8,
-                        delay: 1.0 + i * 0.2,
-                        ease: [0.34, 1.56, 0.64, 1],
-                      }}
-                    >
-                      <div
-                        className="rounded-xl p-2"
-                        style={{ background: node.bgColor }}
-                      >
-                        <Icon size={24} style={{ color: node.color }} />
-                      </div>
-                      <div>
-                        <p
-                          className="font-bold text-sm"
-                          style={{ color: node.color }}
-                        >
-                          {node.label}
-                        </p>
-                        <p
-                          className="text-xs"
-                          style={{ color: 'var(--text-muted)' }}
-                        >
-                          {node.subtitle}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-
-                {/* Connection lines (SVG) */}
-                <svg
-                  className="absolute inset-0 w-full h-full pointer-events-none"
-                  style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 800, height: 500 }}
-                >
-                  {branchNodes.map((node, i) => (
-                    <motion.line
-                      key={`line-${node.id}`}
-                      x1={400}
-                      y1={250}
-                      x2={400 + node.x}
-                      y2={250 + node.y}
-                      stroke={node.color}
-                      strokeWidth="1.5"
-                      strokeDasharray="6 4"
-                      opacity="0.4"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 0.4 }}
-                      transition={{ duration: 0.6, delay: 1.2 + i * 0.2 }}
-                    />
-                  ))}
-                </svg>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <p className="hero-orbit-caption">
+              Trống đồng là lõi thị giác: các nhóm quyền lực được tổ chức quanh một trung tâm thống nhất.
+            </p>
+          </motion.div>
         </div>
-
-        {/* Scroll hint */}
-        <motion.div
-          className="absolute bottom-8"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <ArrowDown size={24} style={{ color: 'var(--text-muted)' }} />
-        </motion.div>
       </div>
+
+      <motion.div className="absolute bottom-5 z-10" animate={{ y: [0, 7, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+        <ArrowDown size={22} style={{ color: 'rgba(255,255,255,0.68)' }} />
+      </motion.div>
     </section>
   );
 }

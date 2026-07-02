@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
-import { Radio, Trophy, BarChart3, Play, Pause, RotateCcw } from 'lucide-react';
+import { BarChart3, Clock3, Pause, Play, QrCode, Radio, RotateCcw, Trophy } from 'lucide-react';
 import SectionWrapper from '../layout/SectionWrapper';
 import Leaderboard from './Leaderboard';
 import ErrorAnalytics from './ErrorAnalytics';
@@ -15,259 +15,137 @@ const tabs = [
 
 export default function QuizDashboard() {
   const [activeTab, setActiveTab] = useState('live');
-  const { minutes, seconds, isRunning, progress, start, pause, reset } =
-    useCountdown(120);
+  const { minutes, seconds, isRunning, progress, start, pause, reset } = useCountdown(120);
 
-  // Circular timer dimensions
-  const radius = 90;
+  const radius = 86;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference * (1 - progress);
 
   return (
     <SectionWrapper id="quiz">
       <div className="section-container">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <span className="badge badge-gold mb-3 inline-flex">
-            Minigame Tương tác
-          </span>
-          <h2 className="section-title text-center mx-auto">
-            Kiểm tra Kiến thức
-          </h2>
+        <div className="text-center mb-12">
+          <span className="badge badge-gold mb-3 inline-flex">Minigame tương tác</span>
+          <h2 className="section-title text-center mx-auto">Kiểm tra kiến thức</h2>
           <p className="section-subtitle text-center mx-auto">
-            Quiz trực tuyến — Kiểm tra hiểu biết về Nhà nước Pháp quyền
+            Quiz trực tuyến dùng trong phần thuyết trình để phân loại thẩm quyền lập pháp, hành pháp và tư pháp.
           </p>
         </div>
 
-        {/* Tab Bar */}
-        <div
-          className="flex gap-1 p-1.5 rounded-2xl mx-auto mb-8 max-w-md"
-          style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid var(--glass-border)',
-          }}
-        >
+        <div className="mode-toolbar mx-auto mb-10 max-w-xl justify-center">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
-              <motion.button
+              <button
                 key={tab.id}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl flex-1 text-sm font-semibold cursor-pointer relative"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg flex-1 text-sm font-bold cursor-pointer relative min-w-[120px]"
                 style={{
-                  background: 'transparent',
+                  background: isActive ? 'var(--accent-gold-dim)' : 'transparent',
                   border: 'none',
-                  color: isActive
-                    ? 'var(--accent-gold)'
-                    : 'var(--text-muted)',
-                  zIndex: 1,
+                  color: isActive ? 'var(--accent-red)' : 'var(--text-muted)',
+                  minHeight: 42,
                 }}
                 onClick={() => setActiveTab(tab.id)}
               >
-                {isActive && (
-                  <motion.div
-                    className="absolute inset-0 rounded-xl"
-                    style={{
-                      background: 'var(--accent-gold-dim)',
-                      border: '1px solid rgba(212,168,83,0.2)',
-                    }}
-                    layoutId="activeQuizTab"
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 30,
-                    }}
-                  />
-                )}
-                <span className="relative z-10 flex items-center gap-2">
-                  <Icon size={16} />
-                  {tab.label}
-                </span>
-              </motion.button>
+                <Icon size={16} />
+                {tab.label}
+              </button>
             );
           })}
         </div>
 
-        {/* Tab Content */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
-            {/* Live View */}
             {activeTab === 'live' && (
-              <motion.div
-                key="live"
-                className="flex flex-col md:flex-row items-center justify-center gap-12"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* QR Code */}
-                <motion.div
-                  className="glass-card p-8 flex flex-col items-center"
-                  style={{
-                    border: '1px solid rgba(212,168,83,0.15)',
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <p
-                    className="text-sm font-semibold mb-4"
-                    style={{ color: 'var(--accent-gold)' }}
-                  >
-                    Quét mã để tham gia
-                  </p>
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{ background: '#fff' }}
-                  >
-                    <QRCodeSVG
-                      value="https://quiz.hanh-trinh-phap-quyen.edu.vn"
-                      size={180}
-                      level="H"
-                      fgColor="#0A0F1E"
-                      bgColor="#ffffff"
-                    />
+              <motion.div key="live" className="quiz-live-grid" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}>
+                <motion.div className="glass-card quiz-live-card" whileHover={{ y: -3 }}>
+                  <div className="quiz-card-title">
+                    <QrCode size={16} />
+                    Quét mã tham gia
                   </div>
-                  <p
-                    className="text-xs mt-4"
-                    style={{
-                      color: 'var(--text-muted)',
-                      fontFamily: 'var(--font-mono)',
-                    }}
-                  >
+                  <div className="quiz-card-body">
+                    <div className="p-4 rounded-lg" style={{ background: '#fff', border: '1px solid var(--border)' }}>
+                      <QRCodeSVG value="https://quiz.hanh-trinh-phap-quyen.edu.vn" size={190} level="H" fgColor="#231f20" bgColor="#ffffff" />
+                    </div>
+                  </div>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', lineHeight: 1.5 }}>
                     quiz.hanh-trinh-phap-quyen.edu.vn
                   </p>
                 </motion.div>
 
-                {/* Countdown Timer */}
-                <div className="flex flex-col items-center">
-                  <div className="relative">
-                    <svg width="220" height="220" viewBox="0 0 220 220">
-                      {/* Background circle */}
-                      <circle
-                        cx="110"
-                        cy="110"
-                        r={radius}
-                        fill="none"
-                        stroke="rgba(255,255,255,0.05)"
-                        strokeWidth="8"
-                      />
-                      {/* Progress circle */}
-                      <circle
-                        cx="110"
-                        cy="110"
-                        r={radius}
-                        fill="none"
-                        stroke={
-                          progress > 0.3
-                            ? 'var(--accent-gold)'
-                            : 'var(--accent-red)'
-                        }
-                        strokeWidth="8"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={strokeDashoffset}
-                        transform="rotate(-90 110 110)"
-                        style={{
-                          transition: 'stroke-dashoffset 1s linear',
-                          filter:
-                            progress > 0.3
-                              ? 'drop-shadow(0 0 8px rgba(212,168,83,0.4))'
-                              : 'drop-shadow(0 0 8px rgba(239,68,68,0.4))',
-                        }}
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span
-                        className="text-4xl font-black"
-                        style={{
-                          color:
-                            progress > 0.3
-                              ? 'var(--accent-gold)'
-                              : 'var(--accent-red)',
-                          fontFamily: 'var(--font-mono)',
-                        }}
-                      >
-                        {String(minutes).padStart(2, '0')}:
-                        {String(seconds).padStart(2, '0')}
-                      </span>
-                      <span
-                        className="text-xs mt-1"
-                        style={{ color: 'var(--text-muted)' }}
-                      >
-                        Thời gian còn lại
-                      </span>
+                <motion.div className="glass-card quiz-live-card" whileHover={{ y: -3 }}>
+                  <div className="quiz-card-title">
+                    <Clock3 size={16} />
+                    Bộ đếm thời gian
+                  </div>
+
+                  <div className="quiz-card-body">
+                    <div className="relative">
+                      <svg width="220" height="220" viewBox="0 0 220 220">
+                        <circle cx="110" cy="110" r={radius} fill="none" stroke="rgba(35,31,32,0.08)" strokeWidth="9" />
+                        <circle
+                          cx="110"
+                          cy="110"
+                          r={radius}
+                          fill="none"
+                          stroke={progress > 0.3 ? 'var(--accent-gold)' : 'var(--accent-red)'}
+                          strokeWidth="9"
+                          strokeLinecap="round"
+                          strokeDasharray={circumference}
+                          strokeDashoffset={strokeDashoffset}
+                          transform="rotate(-90 110 110)"
+                          style={{ transition: 'stroke-dashoffset 1s linear' }}
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-4xl font-black" style={{ color: progress > 0.3 ? 'var(--accent-gold)' : 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>
+                          {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+                        </span>
+                        <span className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+                          Thời gian còn lại
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Controls */}
-                  <div className="flex items-center gap-3 mt-6">
+                  <div className="flex items-center justify-center gap-3">
                     <motion.button
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold cursor-pointer"
                       style={{
-                        background: isRunning
-                          ? 'rgba(239,68,68,0.1)'
-                          : 'linear-gradient(135deg, var(--accent-gold), var(--accent-bronze))',
-                        border: isRunning
-                          ? '1px solid rgba(239,68,68,0.2)'
-                          : 'none',
-                        color: isRunning ? 'var(--accent-red)' : '#0A0F1E',
+                        background: isRunning ? 'rgba(163,38,42,0.1)' : 'linear-gradient(135deg, var(--accent-gold), var(--accent-bronze))',
+                        border: isRunning ? '1px solid rgba(163,38,42,0.22)' : 'none',
+                        color: isRunning ? 'var(--accent-red)' : '#fff8df',
                       }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.96 }}
                       onClick={isRunning ? pause : start}
                     >
-                      {isRunning ? (
-                        <>
-                          <Pause size={16} /> Tạm dừng
-                        </>
-                      ) : (
-                        <>
-                          <Play size={16} /> Bắt đầu
-                        </>
-                      )}
+                      {isRunning ? <Pause size={16} /> : <Play size={16} />}
+                      {isRunning ? 'Tạm dừng' : 'Bắt đầu'}
                     </motion.button>
                     <motion.button
-                      className="p-2.5 rounded-xl cursor-pointer"
-                      style={{
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid var(--border-light)',
-                        color: 'var(--text-secondary)',
-                      }}
-                      whileHover={{
-                        background: 'rgba(255,255,255,0.1)',
-                      }}
-                      whileTap={{ scale: 0.9 }}
+                      className="p-2.5 rounded-lg cursor-pointer"
+                      style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
+                      whileHover={{ borderColor: 'var(--accent-gold)' }}
+                      whileTap={{ scale: 0.92 }}
                       onClick={reset}
                     >
                       <RotateCcw size={16} />
                     </motion.button>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             )}
 
-            {/* Leaderboard */}
             {activeTab === 'leaderboard' && (
-              <motion.div
-                key="leaderboard"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
+              <motion.div key="leaderboard" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}>
                 <Leaderboard />
               </motion.div>
             )}
 
-            {/* Analytics */}
             {activeTab === 'analytics' && (
-              <motion.div
-                key="analytics"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
+              <motion.div key="analytics" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}>
                 <ErrorAnalytics />
               </motion.div>
             )}

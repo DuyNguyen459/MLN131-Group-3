@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Bot, UserCheck, CheckCircle2, AlertCircle, BookOpen } from 'lucide-react';
+import { AlertCircle, BookOpen, Bot, CheckCircle2, UserCheck } from 'lucide-react';
 import SectionWrapper from '../layout/SectionWrapper';
 import { transparencyData } from '../../data/mockData';
 
@@ -8,213 +8,133 @@ const statusConfig = {
     label: 'Đã xác minh',
     icon: CheckCircle2,
     color: 'var(--accent-teal)',
-    bg: 'rgba(45,212,191,0.1)',
-    border: 'rgba(45,212,191,0.2)',
+    bg: 'rgba(11,118,106,0.10)',
+    border: 'rgba(11,118,106,0.22)',
   },
   corrected: {
     label: 'Đã chỉnh sửa',
     icon: AlertCircle,
     color: 'var(--accent-gold)',
-    bg: 'rgba(212,168,83,0.1)',
-    border: 'rgba(212,168,83,0.2)',
+    bg: 'rgba(185,138,34,0.12)',
+    border: 'rgba(185,138,34,0.24)',
   },
 };
 
 export default function TransparencyHub() {
   return (
     <SectionWrapper id="transparency">
-      <div
-        className="relative"
-        style={{
-          background:
-            'linear-gradient(180deg, var(--bg-primary), var(--bg-secondary))',
-          borderTop: '1px solid var(--border)',
-        }}
-      >
+      <div className="relative" style={{ background: 'linear-gradient(180deg, var(--bg-primary), var(--bg-secondary))' }}>
         <div className="section-container">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <span className="badge badge-gold mb-3 inline-flex">
-              Minh bạch Học thuật
-            </span>
-            <h2 className="section-title text-center mx-auto">
-              AI Transparency Hub
-            </h2>
+          <div className="text-center mb-14">
+            <span className="badge badge-gold mb-3 inline-flex">Minh bạch học thuật</span>
+            <h2 className="section-title text-center mx-auto">AI Transparency Hub</h2>
             <p className="section-subtitle text-center mx-auto">
-              So sánh nội dung AI tạo ra với nguồn tài liệu đã được xác minh
+              So sánh ý tưởng AI tạo ra với phần kiểm chứng của nhóm, giúp người xem thấy rõ nội dung nào đã được rà soát.
             </p>
           </div>
 
-          {/* Comparison Table */}
-          <div className="max-w-5xl mx-auto">
-            {/* Table Header */}
-            <div
-              className="grid grid-cols-12 gap-4 px-6 py-4 rounded-t-2xl"
-              style={{
-                background: 'rgba(212,168,83,0.06)',
-                border: '1px solid rgba(212,168,83,0.12)',
-                borderBottom: 'none',
-              }}
-            >
-              <div className="col-span-1 flex items-center">
-                <span
-                  className="text-xs font-bold uppercase tracking-wider"
-                  style={{ color: 'var(--text-muted)' }}
-                >
+          <div className="responsive-table-wrap">
+            <div className="ai-table">
+              <div className="ai-table-row" style={{ background: 'rgba(185,138,34,0.09)', border: '1px solid rgba(185,138,34,0.16)', borderBottom: 'none', paddingTop: 18, paddingBottom: 18 }}>
+                <div className="text-xs font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
                   #
-                </span>
-              </div>
-              <div className="col-span-4 flex items-center gap-2">
-                <Bot size={16} style={{ color: 'var(--accent-purple)' }} />
-                <span
-                  className="text-sm font-bold"
-                  style={{ color: 'var(--accent-purple)' }}
-                >
-                  AI Prompts & Ý tưởng AI tạo ra
-                </span>
-              </div>
-              <div className="col-span-5 flex items-center gap-2">
-                <UserCheck
-                  size={16}
-                  style={{ color: 'var(--accent-teal)' }}
-                />
-                <span
-                  className="text-sm font-bold"
-                  style={{ color: 'var(--accent-teal)' }}
-                >
-                  Xác minh bởi Con người
-                </span>
-              </div>
-              <div className="col-span-2 flex items-center justify-center">
-                <span
-                  className="text-xs font-bold uppercase tracking-wider"
-                  style={{ color: 'var(--text-muted)' }}
-                >
+                </div>
+                <div className="flex items-center gap-2">
+                  <Bot size={16} style={{ color: 'var(--accent-purple)' }} />
+                  <span className="text-sm font-bold" style={{ color: 'var(--accent-purple)' }}>
+                    AI prompt / output
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <UserCheck size={16} style={{ color: 'var(--accent-teal)' }} />
+                  <span className="text-sm font-bold" style={{ color: 'var(--accent-teal)' }}>
+                    Nhóm xác minh
+                  </span>
+                </div>
+                <div className="ai-status-cell text-xs font-bold uppercase" style={{ color: 'var(--text-muted)' }}>
                   Trạng thái
-                </span>
+                </div>
               </div>
-            </div>
 
-            {/* Table Rows */}
-            {transparencyData.map((row, i) => {
-              const status = statusConfig[row.status];
-              const StatusIcon = status.icon;
-
-              return (
-                <motion.div
-                  key={row.id}
-                  className="grid grid-cols-12 gap-4 px-6 py-5"
-                  style={{
-                    background:
-                      i % 2 === 0
-                        ? 'rgba(255,255,255,0.02)'
-                        : 'rgba(255,255,255,0.01)',
-                    border: '1px solid var(--glass-border)',
-                    borderTop: 'none',
-                    ...(i === transparencyData.length - 1 && {
-                      borderRadius: '0 0 16px 16px',
-                    }),
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  whileHover={{
-                    background: 'rgba(212,168,83,0.03)',
-                  }}
-                >
-                  {/* Row Number */}
-                  <div className="col-span-1 flex items-start">
-                    <span
-                      className="text-sm font-bold"
-                      style={{
-                        color: 'var(--text-muted)',
-                        fontFamily: 'var(--font-mono)',
-                      }}
-                    >
-                      {String(row.id).padStart(2, '0')}
-                    </span>
-                  </div>
-
-                  {/* AI Side */}
-                  <div className="col-span-4">
-                    <p
-                      className="text-xs font-semibold mb-1"
-                      style={{ color: 'var(--accent-purple)' }}
-                    >
-                      Prompt:
-                    </p>
-                    <p
-                      className="text-sm mb-2 leading-relaxed"
-                      style={{ color: 'var(--text-primary)' }}
-                    >
-                      {row.aiPrompt}
-                    </p>
-                    <div
-                      className="text-xs px-3 py-2 rounded-lg leading-relaxed"
-                      style={{
-                        background: 'rgba(167,139,250,0.06)',
-                        border: '1px solid rgba(167,139,250,0.1)',
-                        color: 'var(--text-secondary)',
-                      }}
-                    >
-                      → {row.aiOutput}
-                    </div>
-                  </div>
-
-                  {/* Human Side */}
-                  <div className="col-span-5">
-                    <p
-                      className="text-sm leading-relaxed mb-2"
-                      style={{ color: 'var(--text-secondary)' }}
-                    >
-                      {row.humanVerification}
-                    </p>
-                    <div className="flex items-center gap-1.5">
-                      <BookOpen
-                        size={12}
-                        style={{ color: 'var(--accent-gold)' }}
-                      />
-                      <span
-                        className="text-xs font-medium"
-                        style={{ color: 'var(--accent-gold)' }}
-                      >
-                        {row.source}
+              {transparencyData.map((row, i) => {
+                const status = statusConfig[row.status];
+                const StatusIcon = status.icon;
+                return (
+                  <motion.div
+                    key={row.id}
+                    className="ai-table-row"
+                    style={{
+                      background: i % 2 === 0 ? 'rgba(255,253,248,0.94)' : 'rgba(255,253,248,0.72)',
+                      border: '1px solid var(--glass-border)',
+                      borderTop: 'none',
+                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <div>
+                      <span className="text-sm font-bold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                        {String(row.id).padStart(2, '0')}
                       </span>
                     </div>
-                  </div>
 
-                  {/* Status */}
-                  <div className="col-span-2 flex items-start justify-center">
-                    <span
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold"
-                      style={{
-                        background: status.bg,
-                        border: `1px solid ${status.border}`,
-                        color: status.color,
-                      }}
-                    >
-                      <StatusIcon size={12} />
-                      {status.label}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
+                    <div>
+                      <p className="text-xs font-bold mb-2" style={{ color: 'var(--accent-purple)' }}>
+                        Prompt
+                      </p>
+                      <p className="text-sm mb-3" style={{ color: 'var(--text-primary)', lineHeight: 1.72 }}>
+                        {row.aiPrompt}
+                      </p>
+                      <div
+                        className="text-xs px-3 py-2 rounded-lg"
+                        style={{
+                          background: 'rgba(91,74,160,0.07)',
+                          border: '1px solid rgba(91,74,160,0.12)',
+                          color: 'var(--text-secondary)',
+                          lineHeight: 1.72,
+                        }}
+                      >
+                        → {row.aiOutput}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.78 }}>
+                        {row.humanVerification}
+                      </p>
+                      <div className="flex items-center gap-1.5">
+                        <BookOpen size={13} style={{ color: 'var(--accent-gold)', flexShrink: 0 }} />
+                        <span className="text-xs font-semibold" style={{ color: 'var(--accent-gold)', lineHeight: 1.45 }}>
+                          {row.source}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="ai-status-cell">
+                      <span
+                        className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold"
+                        style={{ background: status.bg, border: `1px solid ${status.border}`, color: status.color, minWidth: 112 }}
+                      >
+                        <StatusIcon size={12} />
+                        {status.label}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Footer note */}
           <motion.p
-            className="text-center mt-8 text-xs max-w-xl mx-auto"
-            style={{ color: 'var(--text-muted)' }}
+            className="text-center mt-9 text-xs max-w-2xl mx-auto"
+            style={{ color: 'var(--text-muted)', lineHeight: 1.8 }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Tất cả nội dung AI tạo ra đều được đối chiếu với Giáo trình Chủ
-            nghĩa xã hội khoa học (Bộ GD&ĐT, 2021) và Hiến pháp nước CHXHCN
-            Việt Nam 2013. Các mục "Đã chỉnh sửa" cho thấy AI có thể tạo ra
-            nội dung chưa chính xác và cần sự kiểm duyệt của con người.
+            Nội dung AI chỉ được dùng như công cụ hỗ trợ. Các điểm pháp lý trọng yếu được nhóm đối chiếu với giáo trình,
+            Hiến pháp hiện hành và văn bản chính thức trước khi đưa lên giao diện.
           </motion.p>
         </div>
       </div>
