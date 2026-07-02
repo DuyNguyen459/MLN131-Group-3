@@ -169,11 +169,11 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.h1
-          className="text-5xl md:text-7xl font-black mb-4 glow-text-gold"
+          className="text-5xl md:text-7xl font-black mb-4 glow-text-red"
           style={{
-            color: 'var(--accent-gold)',
+            color: 'var(--accent-red)',
             fontFamily: 'var(--font-heading)',
-            letterSpacing: '-0.03em',
+            letterSpacing: '-0.02em',
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -219,14 +219,14 @@ export default function HeroSection() {
                   className="flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-lg cursor-pointer"
                   style={{
                     background:
-                      'linear-gradient(135deg, var(--accent-gold), var(--accent-bronze))',
-                    color: '#0A0F1E',
-                    border: 'none',
+                      'linear-gradient(135deg, var(--accent-red), var(--accent-bronze))',
+                    color: 'var(--bg-primary)',
+                    border: '1px solid var(--accent-gold-light)',
                     fontFamily: 'var(--font-heading)',
                   }}
                   whileHover={{
                     scale: 1.05,
-                    boxShadow: '0 0 40px rgba(212, 168, 83, 0.5)',
+                    boxShadow: '0 0 40px rgba(179, 8, 8, 0.4)',
                   }}
                   whileTap={{ scale: 0.97 }}
                   onClick={handleActivate}
@@ -234,7 +234,7 @@ export default function HeroSection() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
                 >
-                  <Zap size={22} />
+                  <Zap size={22} style={{ color: 'var(--accent-gold-light)' }} />
                   Khởi động hệ thống
                 </motion.button>
               </motion.div>

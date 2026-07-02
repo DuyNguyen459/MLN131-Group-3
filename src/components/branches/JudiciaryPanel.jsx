@@ -15,7 +15,7 @@ function CourtNode({ node, depth = 0 }) {
           background:
             depth === 0
               ? 'var(--accent-red-dim)'
-              : 'rgba(255,255,255,0.03)',
+              : 'rgba(74, 62, 61, 0.03)',
           border: `1px solid ${
             depth === 0 ? 'rgba(239,68,68,0.2)' : 'transparent'
           }`,
@@ -83,7 +83,7 @@ export default function JudiciaryPanel() {
       {/* Tabs */}
       <div
         className="flex gap-1 p-1 rounded-xl mb-4"
-        style={{ background: 'rgba(255,255,255,0.03)' }}
+        style={{ background: 'rgba(74, 62, 61, 0.03)' }}
       >
         {[
           { id: 'tree', label: 'Hệ thống Tòa án', icon: Gavel },
@@ -112,7 +112,7 @@ export default function JudiciaryPanel() {
                 background:
                   activeTab === tab.id
                     ? undefined
-                    : 'rgba(255,255,255,0.03)',
+                    : 'rgba(74, 62, 61, 0.03)',
               }}
               onClick={() => setActiveTab(tab.id)}
             >

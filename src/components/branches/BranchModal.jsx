@@ -40,7 +40,7 @@ export default function BranchModal({ isOpen, onClose, title, children }) {
               <motion.button
                 className="p-2 rounded-lg cursor-pointer"
                 style={{
-                  background: 'rgba(255,255,255,0.05)',
+                  background: 'rgba(74, 62, 61, 0.05)',
                   border: 'none',
                   color: 'var(--text-secondary)',
                 }}

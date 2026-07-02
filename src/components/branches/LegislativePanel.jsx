@@ -13,7 +13,7 @@ function OrgNode({ node, depth = 0 }) {
       <motion.div
         className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer my-1"
         style={{
-          background: depth === 0 ? 'var(--accent-gold-dim)' : 'rgba(255,255,255,0.03)',
+          background: depth === 0 ? 'var(--accent-gold-dim)' : 'rgba(74, 62, 61, 0.03)',
           border: `1px solid ${depth === 0 ? 'rgba(212,168,83,0.2)' : 'transparent'}`,
         }}
         whileHover={{

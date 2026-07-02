@@ -88,7 +88,7 @@ export default function BranchesSection() {
           <div 
             className="flex p-1 rounded-xl self-start md:self-end"
             style={{ 
-              background: 'rgba(255,255,255,0.03)',
+              background: 'rgba(74, 62, 61, 0.03)',
               border: '1px solid var(--glass-border)' 
             }}
           >
@@ -162,7 +162,7 @@ export default function BranchesSection() {
                       border: `1px solid ${
                         isExpanded ? branch.borderColor : 'var(--glass-border)'
                       }`,
-                      background: isExpanded ? 'rgba(20, 28, 43, 0.55)' : 'rgba(20, 28, 43, 0.85)',
+                      background: isExpanded ? 'var(--bg-secondary)' : 'var(--bg-elevated)',
                     }}
                     layout
                     animate={{
@@ -280,7 +280,7 @@ export default function BranchesSection() {
                           y1={220}
                           x2={200 + branch.x}
                           y2={220 + branch.y}
-                          stroke="rgba(255,255,255,0.05)"
+                          stroke="rgba(74, 62, 61, 0.08)"
                           strokeWidth="1.5"
                         />
                         <motion.line
@@ -371,7 +371,7 @@ export default function BranchesSection() {
                       className="glass-panel p-6 flex-1 flex flex-col justify-between"
                       style={{
                         borderLeft: `3px solid ${activeBranchData.color}`,
-                        background: 'rgba(20, 28, 43, 0.4)',
+                        background: 'var(--bg-secondary)',
                       }}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}

@@ -31,7 +31,7 @@ function TreeNode({ node, depth = 0 }) {
           background:
             depth === 0
               ? 'var(--accent-teal-dim)'
-              : 'rgba(255,255,255,0.03)',
+              : 'rgba(74, 62, 61, 0.03)',
           border: `1px solid ${
             depth === 0 ? 'rgba(45,212,191,0.2)' : 'transparent'
           }`,
