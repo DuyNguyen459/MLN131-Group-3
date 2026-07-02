@@ -9,7 +9,7 @@ function OrgNode({ node, depth = 0 }) {
   const hasChildren = node.children && node.children.length > 0;
 
   return (
-    <div style={{ marginLeft: depth ? 14 : 0 }}>
+    <div className="panel-tree-node" style={{ marginLeft: depth ? 14 : 0 }}>
       <motion.button
         className="panel-node w-full text-left cursor-pointer"
         style={{

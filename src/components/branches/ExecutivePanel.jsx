@@ -15,7 +15,7 @@ function TreeNode({ node, depth = 0 }) {
   const hasChildren = node.children && node.children.length > 0;
 
   return (
-    <div style={{ marginLeft: depth ? 14 : 0 }}>
+    <div className="panel-tree-node" style={{ marginLeft: depth ? 14 : 0 }}>
       <motion.button
         className="panel-node w-full text-left cursor-pointer"
         style={{
@@ -53,19 +53,19 @@ export default function ExecutivePanel() {
       ))}
 
       <motion.div
-        className="glass-card p-5 mt-2"
+        className="glass-card branch-note-card mt-2"
         style={{ border: '1px solid rgba(11,118,106,0.18)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <div className="flex items-center gap-2 mb-2">
+        <div className="branch-note-heading">
           <Sparkles size={15} style={{ color: 'var(--accent-teal)' }} />
           <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--accent-teal)' }}>
             {executiveCaseStudy.title}
           </span>
         </div>
-        <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
+        <p className="branch-note-copy text-sm" style={{ color: 'var(--text-secondary)' }}>
           {executiveCaseStudy.description}
         </p>
 

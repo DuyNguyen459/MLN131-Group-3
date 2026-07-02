@@ -100,7 +100,7 @@ export default function BranchesSection() {
           {viewMode === 'hub' && (
             <motion.div
               key="hub-view"
-              className="branch-content-shell"
+              className="branch-content-shell branch-hub-view"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -18 }}
@@ -193,7 +193,7 @@ export default function BranchesSection() {
           {viewMode === 'grid' && (
             <motion.div
               key="grid-view"
-              className="grid grid-cols-1 lg:grid-cols-3 gap-7"
+              className="branch-grid-view"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -18 }}
@@ -204,7 +204,7 @@ export default function BranchesSection() {
                 return (
                   <motion.div
                     key={branch.id}
-                    className="glass-card p-6 flex flex-col gap-5"
+                    className="glass-card branch-grid-card"
                     style={{ borderTop: `4px solid ${branch.color}`, minHeight: 560 }}
                     whileHover={{ y: -4 }}
                   >
@@ -213,7 +213,7 @@ export default function BranchesSection() {
                         <Icon size={26} style={{ color: branch.color }} />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold" style={{ color: branch.color }}>
+                        <h3 className="branch-card-title" style={{ color: branch.color }}>
                           {branch.title}
                         </h3>
                         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
@@ -231,7 +231,7 @@ export default function BranchesSection() {
           {viewMode === 'accordion' && (
             <motion.div
               key="accordion-view"
-              className="flex flex-col gap-6"
+              className="branch-accordion-view"
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -18 }}
@@ -241,7 +241,7 @@ export default function BranchesSection() {
                 const Panel = branch.panel;
                 const isOpen = expandedBranch === branch.id;
                 return (
-                  <div key={branch.id} className="glass-card overflow-hidden" style={{ border: `1px solid ${isOpen ? branch.borderColor : 'var(--glass-border)'}` }}>
+                  <div key={branch.id} className="glass-card branch-accordion-card" style={{ border: `1px solid ${isOpen ? branch.borderColor : 'var(--glass-border)'}` }}>
                     <button
                       className="w-full flex items-center justify-between gap-4 p-6 text-left cursor-pointer"
                       style={{ background: isOpen ? branch.dimColor : 'transparent', border: 'none' }}
@@ -260,7 +260,7 @@ export default function BranchesSection() {
                       </span>
                     </button>
                     {isOpen && (
-                      <div className="p-6 pt-0">
+                      <div className="branch-accordion-body">
                         <Panel />
                       </div>
                     )}

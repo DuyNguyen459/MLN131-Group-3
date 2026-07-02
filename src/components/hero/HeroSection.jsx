@@ -39,14 +39,13 @@ export default function HeroSection() {
 
   const handleActivate = () => {
     setIsActivated(true);
-    setTimeout(() => {
-      const el = document.getElementById('branches');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 900);
   };
 
   return (
-    <section id="hero" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden hero-stage">
+    <section
+      id="hero"
+      className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden hero-stage ${isActivated ? 'is-activated' : ''}`}
+    >
       <img src={heroImage} alt="" className="hero-image" />
       <div className="hero-scrim" />
 
@@ -87,7 +86,7 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            className="hero-orbit"
+            className={`hero-orbit ${isActivated ? 'is-activated' : ''}`}
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.1 }}
@@ -121,6 +120,7 @@ export default function HeroSection() {
 
             <motion.div
               className="hero-drum-core"
+              style={{ x: '-50%', y: '-50%' }}
               animate={{ scale: isActivated ? [1, 1.035, 1] : 1 }}
               transition={{ duration: 1.2, repeat: isActivated ? Infinity : 0 }}
             >

@@ -99,7 +99,7 @@ export default function Sidebar() {
       <AnimatePresence>
         {isExpanded && (
           <motion.div
-            className="mx-3 mb-4 p-4 rounded-lg"
+            className="sidebar-focus-card"
             style={{
               background: 'linear-gradient(135deg, rgba(163, 38, 42, 0.10), rgba(185, 138, 34, 0.12))',
               border: '1px solid rgba(185, 138, 34, 0.25)',
@@ -109,16 +109,16 @@ export default function Sidebar() {
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.22 }}
           >
-            <div className="flex items-center gap-2 mb-2">
+            <div className="sidebar-focus-label">
               <FileText size={16} style={{ color: 'var(--accent-red)' }} />
-              <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--accent-red)' }}>
+              <span style={{ color: 'var(--accent-red)' }}>
                 Trọng tâm
               </span>
             </div>
-            <h4 className="text-sm font-bold mb-1 leading-snug" style={{ color: 'var(--text-primary)' }}>
+            <h4 className="sidebar-focus-title" style={{ color: 'var(--text-primary)' }}>
               {nghiQuyetCard.title}
             </h4>
-            <p className="text-xs" style={{ color: 'var(--text-secondary)', lineHeight: 1.58 }}>
+            <p className="sidebar-focus-copy" style={{ color: 'var(--text-secondary)' }}>
               {nghiQuyetCard.content}
             </p>
           </motion.div>

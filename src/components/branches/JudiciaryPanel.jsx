@@ -8,7 +8,7 @@ function CourtNode({ node, depth = 0 }) {
   const hasChildren = node.children && node.children.length > 0;
 
   return (
-    <div style={{ marginLeft: depth ? 14 : 0 }}>
+    <div className="panel-tree-node" style={{ marginLeft: depth ? 14 : 0 }}>
       <motion.button
         className="panel-node w-full text-left cursor-pointer"
         style={{
@@ -83,31 +83,31 @@ export default function JudiciaryPanel() {
             {judiciaryCases.map((c, i) => (
               <motion.div
                 key={c.id}
-                className="glass-card p-5"
+                className="glass-card judiciary-case-card"
                 style={{ border: '1px solid rgba(163,38,42,0.16)' }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
               >
-                <div className="flex items-start gap-3 mb-3">
+                <div className="judiciary-case-heading">
                   <Scale size={18} style={{ color: 'var(--accent-red)', flexShrink: 0, marginTop: 2 }} />
                   <div>
-                    <h5 className="text-sm font-bold" style={{ color: 'var(--text-primary)', lineHeight: 1.35 }}>
+                    <h5 className="judiciary-case-title text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
                       {c.title}
                     </h5>
                     <span className="badge badge-red mt-2">{c.type}</span>
                   </div>
                 </div>
-                <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)', lineHeight: 1.75 }}>
+                <p className="judiciary-case-copy text-sm" style={{ color: 'var(--text-secondary)' }}>
                   {c.summary}
                 </p>
                 <div
-                  className="text-xs px-3 py-2 rounded-lg"
+                  className="judiciary-case-verdict text-xs rounded-lg"
                   style={{ background: 'rgba(163,38,42,0.07)', color: 'var(--accent-red)', fontWeight: 750, lineHeight: 1.55 }}
                 >
                   {c.verdict}
                 </div>
-                <p className="text-xs mt-3 italic" style={{ color: 'var(--text-muted)', lineHeight: 1.55 }}>
+                <p className="judiciary-case-significance text-xs italic" style={{ color: 'var(--text-muted)' }}>
                   {c.significance}
                 </p>
               </motion.div>
