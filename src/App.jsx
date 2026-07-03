@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import {
@@ -13,7 +13,6 @@ import {
   YAxis,
 } from 'recharts';
 import {
-  Bot,
   Building2,
   ChevronDown,
   ChevronRight,
@@ -29,18 +28,25 @@ import {
   Star,
   Timer,
   Trash2,
-  Trophy,
   X,
 } from 'lucide-react';
-import DongSonDrum from './components/common/DongSonDrum';
 import heroImage from './assets/hero.png';
+import stateDiagramImage from './assets/sơ đồ.png';
+import page2Bg from './assets/trang 2.png';
+import page3Bg from './assets/page3.png';
+import page4Bg from './assets/page4.png';
+import page5Bg from './assets/page5.png';
+import page6Bg from './assets/page6.png';
+import verificationImage from './assets/images.png';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const useRemoteDb = Boolean(SUPABASE_URL && SUPABASE_KEY);
+const QUESTION_SECONDS = 10;
 const drumPhotoUrl = 'https://baotanglichsu.vn/DataFiles/2023/01/News/Tieng%20Anh/The%20Ngoc%20Lu%20drum/Trong%20Ngoc%20Lu%202.jpg';
 
 function DbStatusBadge({ status }) {
+  if (status === 'missing') return null;
   const label = {
     connected: 'DB realtime đã kết nối',
     connecting: 'Đang kết nối DB',
@@ -66,20 +72,33 @@ const officialNotes = [
   'Luật Tổ chức Tòa án nhân dân 2024: hệ thống tòa án có TAND tối cao, TAND cấp tỉnh, TAND khu vực và tòa án quân sự.',
 ];
 
-const hubNodes = [
-  { id: 'party', label: 'Đảng lãnh đạo', tip: 'Định hướng chính trị, không làm thay Nhà nước', icon: Star, x: 50, y: 15 },
-  { id: 'branches', label: 'Quốc hội', tip: 'Lập hiến, lập pháp, giám sát tối cao', icon: Landmark, x: 76, y: 30 },
-  { id: 'branches', label: 'Chính phủ', tip: 'Tổ chức thi hành pháp luật và dịch vụ công', icon: Building2, x: 78, y: 64 },
-  { id: 'branches', label: 'Tòa án & VKS', tip: 'Bảo vệ công lý, kiểm soát tư pháp', icon: Scale, x: 58, y: 82 },
-  { id: 'feedback', label: 'Ý kiến nhân dân', tip: 'Tiếp nhận, xử lý, giải trình', icon: MessageSquareText, x: 24, y: 70 },
-  { id: 'quiz', label: 'Trò chơi', tip: 'Câu hỏi được trộn tự động', icon: Trophy, x: 24, y: 38 },
-  { id: 'transparency', label: 'Minh bạch AI', tip: 'AI chỉ hỗ trợ, nhóm chịu trách nhiệm', icon: Bot, x: 34, y: 20 },
-];
+const branchVerificationContent = {
+  chinhphu: {
+    title: 'Chính phủ hành động, Chính phủ phục vụ',
+    lead: 'Đề án 06 và Chiến lược Chuyển đổi số quốc gia đang hiển thị trên giao diện của nhóm là minh chứng cho cách Chính phủ cụ thể hóa pháp luật thành dịch vụ phục vụ người dân.',
+    points: [
+      ['Cụ thể hóa pháp luật', 'Sau khi Quốc hội thông qua Luật Căn cước và Luật Cư trú, Chính phủ ban hành nghị định, chỉ đạo và hệ thống hướng dẫn thực thi.'],
+      ['Số hóa dữ liệu dân cư', 'Dữ liệu dân cư được kết nối, chuẩn hóa và khai thác để cắt giảm hàng trăm thủ tục rườm rà.'],
+      ['Dịch vụ công trực tuyến', 'Người dân có thể ngồi tại nhà để làm hộ chiếu, đăng ký khai sinh qua Cổng dịch vụ công trực tuyến.'],
+      ['Phối hợp quyền lực', 'Quốc hội vạch hành lang pháp lý, Chính phủ linh hoạt và chủ động thực thi để mang lại lợi ích thực chất cho Nhân dân.'],
+    ],
+  },
+  tuphap: {
+    title: 'Tư pháp nghiêm minh, công lý độc lập',
+    lead: 'Các đại án kinh tế, tham nhũng gần đây như Vạn Thịnh Phát, Trương Mỹ Lan hay vụ chuyến bay giải cứu cho thấy vai trò bảo vệ công lý của nhánh tư pháp.',
+    points: [
+      ['Xét xử công khai, minh bạch', 'Việc đưa các đại án ra xét xử thể hiện thông điệp: không có vùng cấm, không có ngoại lệ, bất kể người đó là ai.'],
+      ['Độc lập theo pháp luật', 'Nguyên tắc cốt lõi của Hiến pháp là Thẩm phán và Hội thẩm xét xử độc lập và chỉ tuân theo pháp luật.'],
+      ['Không can thiệp công lý', 'Sự độc lập xét xử bảo đảm không cá nhân nào có thể dùng tiền bạc hay quyền lực để tác động vào phán quyết.'],
+      ['Niềm tin pháp lý', 'Nhánh tư pháp nghiêm minh là chỗ dựa và là niềm tin pháp lý của toàn thể Nhân dân.'],
+    ],
+  },
+};
 
 const partyMechanisms = [
   {
     title: 'Tính nhất nguyên chính trị',
-    body: 'Trong hệ thống chính trị Việt Nam, Đảng giữ vai trò lãnh đạo thống nhất về định hướng. Khi trình bày cần phân biệt rõ: lãnh đạo chính trị không đồng nghĩa với thay Nhà nước ban hành quyết định hành chính.',
+    body: 'Trong hệ thống chính trị Việt Nam, Đảng giữ vai trò lãnh đạo thống nhất về định hướng.',
     evidence: 'Căn cứ học thuật: Điều 4 Hiến pháp 2013; giáo trình Chủ nghĩa xã hội khoa học.',
   },
   {
@@ -497,7 +516,7 @@ function useRemoteList(table) {
       if (timer) window.clearInterval(timer);
     };
   }, [table]);
-  const setStoredItems = (next) => {
+  const setStoredItems = useCallback((next) => {
     const value = typeof next === 'function' ? next(items) : next;
     if (useRemoteDb) {
       syncRemoteTable(table, items, value)
@@ -507,7 +526,7 @@ function useRemoteList(table) {
       setDbStatus('missing');
     }
     setItems(value);
-  };
+  }, [items, table]);
   return [items, setStoredItems, dbStatus];
 }
 
@@ -574,8 +593,8 @@ function Navbar() {
   return (
     <header className="topbar">
       <button className={`brand ${activeId === 'hero' ? 'active' : ''}`} onClick={() => goTo('hero')} aria-label="Về đầu trang">
-        <span className="brand-mark"><Star size={18} fill="currentColor" /></span>
-        <span>Hành trình Pháp quyền</span>
+        <span className="brand-mark party-logo" aria-hidden="true">☭</span>
+        <span className="brand-title"><span>Hành trình</span><span>Pháp quyền</span></span>
       </button>
       <nav className="desktop-nav">
         {navItems.map((item) => <button key={item.id} className={activeId === item.id ? 'active' : ''} onClick={() => goTo(item.id)}>{item.label}</button>)}
@@ -594,8 +613,7 @@ function Navbar() {
   );
 }
 
-function HeroSection() {
-  const [activated, setActivated] = useState(false);
+function HeroSection({ onStartJourney, journeyStarted }) {
   return (
     <section id="hero" className="hero-section">
       <img src={heroImage} alt="" className="hero-bg" />
@@ -603,10 +621,12 @@ function HeroSection() {
       <div className="hero-content">
         <motion.div className="hero-copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
           <span className="eyebrow">MLN131 - Nhóm 3</span>
-          <h1>Hành trình Pháp quyền</h1>
+          <h1><span>Hành trình</span><span>Pháp quyền</span></h1>
           <p>Mô hình tương tác về Dân chủ XHCN, Nhà nước pháp quyền Việt Nam và cơ chế vận hành quyền lực trong thời đại số.</p>
           <div className="hero-actions">
-            <button className="primary-btn" onClick={() => setActivated(true)}><Play size={18} fill="currentColor" /> Bắt đầu hành trình</button>
+            <button className="primary-btn" onClick={onStartJourney} aria-expanded={journeyStarted} aria-controls="state-diagram">
+              <Play size={18} fill="currentColor" /> Bắt đầu hành trình
+            </button>
             <button className="ghost-btn" onClick={() => window.open(`${window.location.origin}${window.location.pathname}?game=1`, '_blank', 'noopener,noreferrer')}>Mở cửa sổ game</button>
           </div>
           <div className="fact-row">
@@ -615,51 +635,38 @@ function HeroSection() {
           </div>
         </motion.div>
 
-        <motion.div className="hub-shell glass-card" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
-          <div className="hub-header">
-            <strong>Trống đồng dẫn lối pháp quyền</strong>
-            <span>{activated ? 'Các lát cắt quyền lực đã mở' : 'Khởi động để khám phá sơ đồ'}</span>
-          </div>
-          <div className={`radial-hub ${activated ? 'activated' : ''}`}>
+        <motion.div className="hero-drum-stage" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
+          <div className="radial-hub hero-drum-only">
             <img className="real-drum-photo" src={drumPhotoUrl} alt="Mặt trống đồng Ngọc Lũ, nguồn Bảo tàng Lịch sử Quốc gia" />
-            <svg className="hub-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <circle cx="50" cy="50" r="21" />
-              <circle cx="50" cy="50" r="34" className="dash" />
-              {hubNodes.map((node) => <motion.line key={`${node.label}-line`} x1="50" y1="50" x2={node.x} y2={node.y} initial={{ pathLength: 0 }} animate={{ pathLength: activated ? 1 : 0 }} />)}
-            </svg>
-            <motion.div className="drum-core" animate={{ scale: activated ? [1, 1.03, 1] : 1 }} transition={{ duration: 1.8, repeat: activated ? Infinity : 0 }}>
-              <DongSonDrum size={240} />
-            </motion.div>
-            {hubNodes.map((node, index) => {
-              const Icon = node.icon;
-              return (
-                <motion.button
-                  key={`${node.label}-${index}`}
-                  className="hub-node"
-                  style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                  initial={{ opacity: 0, scale: 0.82 }}
-                  animate={{ opacity: activated ? 1 : index < 3 ? 0.72 : 0, scale: activated ? 1 : 0.92 }}
-                  transition={{ duration: 0.45, delay: activated ? index * 0.05 : 0 }}
-                  onClick={() => scrollToId(node.id)}
-                >
-                  <Icon size={16} />
-                  <span>{node.label}</span>
-                  <small>{node.tip}</small>
-                </motion.button>
-              );
-            })}
           </div>
-          <p className="drum-source">Ảnh nền: Trống đồng Ngọc Lũ - Bảo tàng Lịch sử Quốc gia.</p>
         </motion.div>
       </div>
     </section>
   );
 }
 
+function StateDiagramSection() {
+  return (
+    <motion.section
+      id="state-diagram"
+      className="state-diagram-section"
+      style={{ '--page-bg': `url("${page2Bg}")` }}
+      initial={{ opacity: 0, y: 56 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 30 }}
+      transition={{ duration: 0.58, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div className="state-diagram-frame glass-card">
+        <img src={stateDiagramImage} alt="Sơ đồ bộ máy nhà nước trước và sau ngày 01.07.2025" />
+      </div>
+    </motion.section>
+  );
+}
+
 function PartySection() {
   const [open, setOpen] = useState(0);
   return (
-    <section id="party" className="section">
+    <section id="party" className="section page-bg-section page3-section" style={{ '--page-bg': `url("${page3Bg}")` }}>
       <div className="section-grid two">
         <div>
           <span className="eyebrow red">Điều 4 Hiến pháp 2013</span>
@@ -690,6 +697,44 @@ function PartySection() {
   );
 }
 
+function BranchSourceContent({ activeId }) {
+  if (activeId === 'quochoi') {
+    return (
+      <div className="source-image-frame">
+        <img src={verificationImage} alt="Ghi chú kiểm chứng Quốc hội" />
+      </div>
+    );
+  }
+
+  const content = branchVerificationContent[activeId];
+  if (content) {
+    return (
+      <div className="source-evidence-card">
+        <span className="source-evidence-kicker">Ghi chú kiểm chứng</span>
+        <h4>{content.title}</h4>
+        <p className="source-evidence-lead">{content.lead}</p>
+        <div className="source-evidence-grid">
+          {content.points.map(([title, body], index) => (
+            <article key={title} className="source-evidence-point">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <strong>{title}</strong>
+                <p>{body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="source-list">
+      {officialNotes.map((note) => <p key={note}><ClipboardCheck size={16} /> {note}</p>)}
+    </div>
+  );
+}
+
 function BranchesSection() {
   const [activeId, setActiveId] = useState('quochoi');
   const [view, setView] = useState('structure');
@@ -701,11 +746,11 @@ function BranchesSection() {
     setSelectedOrgIndex(0);
   }, [activeId, view]);
   return (
-    <section id="branches" className="section light-band">
+    <section id="branches" className="section light-band page-bg-section page4-section" style={{ '--page-bg': `url("${page4Bg}")` }}>
       <div className="section-head center">
         <span className="eyebrow">Bộ máy nhà nước - cập nhật tháng 7/2026</span>
         <h2>Quyền lực nhà nước là thống nhất</h2>
-        <p className="lead">Chọn từng cơ quan để xem cấu trúc, thẩm quyền và luồng vận hành. Nội dung tránh tự bịa số liệu, chỉ trình bày nguyên tắc và cấu trúc pháp lý cần cho bài học.</p>
+       
       </div>
       <div className="branch-tabs">
         {stateBranches.map((branch) => {
@@ -773,11 +818,7 @@ function BranchesSection() {
                 {active.workflow.map((step, index) => <div key={step}><span>{index + 1}</span><strong>{step}</strong></div>)}
               </div>
             )}
-            {view === 'sources' && (
-              <div className="source-list">
-                {officialNotes.map((note) => <p key={note}><ClipboardCheck size={16} /> {note}</p>)}
-              </div>
-            )}
+            {view === 'sources' && <BranchSourceContent activeId={active.id} />}
           </div>
         </motion.div>
       </AnimatePresence>
@@ -820,11 +861,11 @@ function FeedbackPortal() {
   };
   const statusLabel = { received: 'Đã tiếp nhận', reviewing: 'Đang xử lý', accepted: 'Đã tiếp thu', explained: 'Có giải trình' };
   return (
-    <section id="feedback" className="section feedback-section">
+    <section id="feedback" className="section feedback-section page-bg-section page5-section" style={{ '--page-bg': `url("${page5Bg}")` }}>
       <div className="section-head">
         <span className="eyebrow cyan">Cơ chế giải trình</span>
         <h2>Cổng tiếp nhận ý kiến Nhân dân</h2>
-        <p className="lead">Luồng nghiệp vụ hoạt động thật trên giao diện: gửi ý kiến, chuyển trạng thái, lưu timeline và công khai tiến độ xử lý.</p>
+        
       </div>
       <div className="feedback-layout">
         <div className="glass-card feedback-form">
@@ -965,7 +1006,7 @@ function QuizHost() {
     .sort((a, b) => b.value - a.value)
     .slice(0, 8);
   return (
-    <section id="quiz" className="section dark-band">
+    <section id="quiz" className="section dark-band page-bg-section page6-section" style={{ '--page-bg': `url("${page6Bg}")` }}>
       <div className="section-head center">
         <span className="eyebrow">Đấu trường thẩm quyền</span>
         <h2>Thử tài phân loại thẩm quyền</h2>
@@ -1027,6 +1068,7 @@ function GameApp() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [done, setDone] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(QUESTION_SECONDS);
   const current = paper[index];
   const start = () => {
     const id = `${name}-${Date.now()}-${Math.random()}`;
@@ -1035,8 +1077,10 @@ function GameApp() {
     setIndex(0);
     setAnswers([]);
     setDone(false);
+    setTimeLeft(QUESTION_SECONDS);
   };
-  const answer = (option) => {
+  const answer = useCallback((option) => {
+    if (!current || done) return;
     const correct = option === current.answer;
     const nextAnswers = [...answers, { id: current.id, correct, option }];
     setAnswers(nextAnswers);
@@ -1048,10 +1092,28 @@ function GameApp() {
     } else {
       setIndex((i) => i + 1);
     }
-  };
+  }, [answers, current, done, index, name, setPlayers, startedAt]);
+  useEffect(() => {
+    if (!paper.length || done || !current) return undefined;
+    setTimeLeft(QUESTION_SECONDS);
+    const questionStartedAt = Date.now();
+    const timer = window.setInterval(() => {
+      const elapsed = Math.floor((Date.now() - questionStartedAt) / 1000);
+      const remaining = Math.max(0, QUESTION_SECONDS - elapsed);
+      setTimeLeft(remaining);
+      if (remaining === 0) {
+        window.clearInterval(timer);
+        answer(null);
+      }
+    }, 250);
+    return () => window.clearInterval(timer);
+  }, [answer, current, done, index, paper.length]);
   const sorted = [...players].sort((a, b) => b.score - a.score || a.duration - b.duration).slice(0, 10);
   return (
-    <main className="game-page">
+    <main className="game-page" style={{ '--game-bg': `url("${page6Bg}")` }}>
+      <div className="game-flag-field" aria-hidden="true">
+        {Array.from({ length: 14 }, (_, flagIndex) => <span key={flagIndex} />)}
+      </div>
       <section className="game-card glass-card">
         {!paper.length && (
           <>
@@ -1077,7 +1139,7 @@ function GameApp() {
         )}
         {paper.length > 0 && !done && current && (
           <>
-            <div className="question-meta"><span>Câu {index + 1}/20</span><span><Timer size={15} /> {Math.round((Date.now() - startedAt) / 1000)}s</span></div>
+            <div className="question-meta"><span>Câu {index + 1}/20</span><span className={timeLeft <= 3 ? 'time-left urgent' : 'time-left'}><Timer size={15} /> {timeLeft}s</span></div>
             <h2>{current.text}</h2>
             <div className="option-grid">{current.options.map((option) => <button key={option} onClick={() => answer(option)}>{option}</button>)}</div>
           </>
@@ -1123,12 +1185,22 @@ function TransparencyHub() {
 
 export default function App() {
   const isGame = new URLSearchParams(window.location.search).get('game') === '1';
+  const [showStateDiagram, setShowStateDiagram] = useState(false);
+
+  const openStateDiagram = () => {
+    setShowStateDiagram(true);
+    window.setTimeout(() => scrollToId('state-diagram'), 80);
+  };
+
   if (isGame) return <GameApp />;
   return (
     <div>
       <Navbar />
       <main>
-        <HeroSection />
+        <HeroSection onStartJourney={openStateDiagram} journeyStarted={showStateDiagram} />
+        <AnimatePresence>
+          {showStateDiagram && <StateDiagramSection />}
+        </AnimatePresence>
         <PartySection />
         <BranchesSection />
         <FeedbackPortal />
