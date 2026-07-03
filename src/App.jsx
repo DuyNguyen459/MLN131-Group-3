@@ -1,42 +1,830 @@
-import Sidebar from './components/layout/Sidebar';
-import HeroSection from './components/hero/HeroSection';
-import BranchesSection from './components/branches/BranchesSection';
-import FeedbackPortal from './components/feedback/FeedbackPortal';
-import QuizDashboard from './components/quiz/QuizDashboard';
-import TransparencyHub from './components/transparency/TransparencyHub';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { QRCodeSVG } from 'qrcode.react';
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import {
+  Bot,
+  Building2,
+  ChevronDown,
+  ChevronRight,
+  ClipboardCheck,
+  Gavel,
+  Landmark,
+  Menu,
+  MessageSquareText,
+  Network,
+  Play,
+  Scale,
+  ShieldCheck,
+  Star,
+  Timer,
+  Trash2,
+  Trophy,
+  X,
+} from 'lucide-react';
+import DongSonDrum from './components/common/DongSonDrum';
+import heroImage from './assets/hero.png';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const useRemoteDb = Boolean(SUPABASE_URL && SUPABASE_KEY);
+const drumPhotoUrl = 'https://baotanglichsu.vn/DataFiles/2023/01/News/Tieng%20Anh/The%20Ngoc%20Lu%20drum/Trong%20Ngoc%20Lu%202.jpg';
+
+function DbStatusBadge({ status }) {
+  const label = {
+    connected: 'DB realtime đã kết nối',
+    connecting: 'Đang kết nối DB',
+    error: 'DB lỗi kết nối',
+    missing: 'Chưa cấu hình DB',
+  }[status] || 'DB chưa rõ trạng thái';
+  return <span className={`db-status ${status}`}>{label}</span>;
+}
+
+const navItems = [
+  { id: 'hero', label: 'Khởi động' },
+  { id: 'party', label: 'Đảng lãnh đạo' },
+  { id: 'branches', label: 'Bộ máy' },
+  { id: 'feedback', label: 'Giải trình' },
+  { id: 'quiz', label: 'Thử thách' },
+  { id: 'transparency', label: 'Minh bạch' },
+];
+
+const officialNotes = [
+  'Hiến pháp 2013: quyền lực nhà nước là thống nhất, có phân công, phối hợp, kiểm soát.',
+  'Điều 4 Hiến pháp 2013: Đảng Cộng sản Việt Nam lãnh đạo Nhà nước và xã hội trong khuôn khổ Hiến pháp, pháp luật.',
+  'Cập nhật mô hình địa phương đến tháng 7/2026 theo hướng hai cấp: cấp tỉnh và cấp xã; không trình bày cấp huyện như một cấp chính quyền địa phương hiện hành.',
+  'Luật Tổ chức Tòa án nhân dân 2024: hệ thống tòa án có TAND tối cao, TAND cấp tỉnh, TAND khu vực và tòa án quân sự.',
+];
+
+const hubNodes = [
+  { id: 'party', label: 'Đảng lãnh đạo', tip: 'Định hướng chính trị, không làm thay Nhà nước', icon: Star, x: 50, y: 15 },
+  { id: 'branches', label: 'Quốc hội', tip: 'Lập hiến, lập pháp, giám sát tối cao', icon: Landmark, x: 76, y: 30 },
+  { id: 'branches', label: 'Chính phủ', tip: 'Tổ chức thi hành pháp luật và dịch vụ công', icon: Building2, x: 78, y: 64 },
+  { id: 'branches', label: 'Tòa án & VKS', tip: 'Bảo vệ công lý, kiểm soát tư pháp', icon: Scale, x: 58, y: 82 },
+  { id: 'feedback', label: 'Ý kiến nhân dân', tip: 'Tiếp nhận, xử lý, giải trình', icon: MessageSquareText, x: 24, y: 70 },
+  { id: 'quiz', label: 'Trò chơi', tip: 'Câu hỏi được trộn tự động', icon: Trophy, x: 24, y: 38 },
+  { id: 'transparency', label: 'Minh bạch AI', tip: 'AI chỉ hỗ trợ, nhóm chịu trách nhiệm', icon: Bot, x: 34, y: 20 },
+];
+
+const partyMechanisms = [
+  {
+    title: 'Tính nhất nguyên chính trị',
+    body: 'Trong hệ thống chính trị Việt Nam, Đảng giữ vai trò lãnh đạo thống nhất về định hướng. Khi trình bày cần phân biệt rõ: lãnh đạo chính trị không đồng nghĩa với thay Nhà nước ban hành quyết định hành chính.',
+    evidence: 'Căn cứ học thuật: Điều 4 Hiến pháp 2013; giáo trình Chủ nghĩa xã hội khoa học.',
+  },
+  {
+    title: 'Không làm thay Nhà nước',
+    body: 'Đảng đề ra đường lối, chủ trương, nghị quyết. Nhà nước thể chế hóa bằng Hiến pháp, luật, nghị quyết, nghị định, quyết định và tổ chức thi hành theo thẩm quyền.',
+    evidence: 'Điểm nhấn thuyết trình: “Đảng lãnh đạo, Nhà nước quản lý, Nhân dân làm chủ”.',
+  },
+  {
+    title: 'Công tác cán bộ và kiểm tra',
+    body: 'Vai trò lãnh đạo còn thể hiện qua định hướng cán bộ, kiểm tra, giám sát tổ chức đảng và đảng viên, qua đó bảo đảm bộ máy vận hành đúng mục tiêu phục vụ Nhân dân.',
+    evidence: 'Không biến nội dung này thành sơ đồ mệnh lệnh hành chính; giữ đúng tinh thần môn học.',
+  },
+  {
+    title: 'Nghị quyết 27-NQ/TW',
+    body: 'Nghị quyết 27-NQ/TW ngày 09/11/2022 đặt trọng tâm tiếp tục xây dựng và hoàn thiện Nhà nước pháp quyền XHCN Việt Nam của Nhân dân, do Nhân dân, vì Nhân dân.',
+    evidence: 'Từ khóa cần nhớ: thượng tôn Hiến pháp và pháp luật, kiểm soát quyền lực, cải cách tư pháp, hành chính phục vụ.',
+  },
+];
+
+const stateBranches = [
+  {
+    id: 'quochoi',
+    title: 'Quốc hội',
+    role: 'Lập pháp',
+    icon: Landmark,
+    color: '#d4a017',
+    summary: 'Cơ quan đại biểu cao nhất của Nhân dân, cơ quan quyền lực nhà nước cao nhất.',
+    structure: [
+      ['Quốc hội', 'Làm Hiến pháp, sửa đổi Hiến pháp; làm luật, sửa đổi luật; quyết định vấn đề quan trọng của đất nước.'],
+      ['Ủy ban Thường vụ Quốc hội', 'Cơ quan thường trực của Quốc hội, thực hiện nhiệm vụ trong thời gian Quốc hội không họp theo thẩm quyền.'],
+      ['Hội đồng Dân tộc và các Ủy ban', 'Thẩm tra dự án luật, giám sát chuyên đề, kiến nghị chính sách.'],
+      ['Đại biểu Quốc hội', 'Đại diện ý chí, nguyện vọng của Nhân dân; chất vấn và giám sát.'],
+    ],
+    workflow: ['Sáng kiến chính sách', 'Thẩm tra', 'Thảo luận', 'Biểu quyết thông qua', 'Giám sát thực hiện'],
+  },
+  {
+    id: 'chinhphu',
+    title: 'Chính phủ',
+    role: 'Hành pháp',
+    icon: Building2,
+    color: '#00a6c8',
+    summary: 'Cơ quan hành chính nhà nước cao nhất, cơ quan chấp hành của Quốc hội.',
+    structure: [
+      ['Chính phủ', 'Thống nhất quản lý nền hành chính quốc gia, tổ chức thi hành Hiến pháp, luật, nghị quyết của Quốc hội.'],
+      ['Thủ tướng Chính phủ', 'Lãnh đạo hoạt động của Chính phủ và hệ thống hành chính nhà nước.'],
+      ['Bộ, cơ quan ngang bộ', 'Quản lý ngành, lĩnh vực; ban hành văn bản theo thẩm quyền; tổ chức dịch vụ công.'],
+      ['Chính quyền địa phương cấp tỉnh, cấp xã', 'Tổ chức thực hiện pháp luật tại địa phương theo mô hình hai cấp cập nhật đến tháng 7/2026.'],
+    ],
+    workflow: ['Luật được thông qua', 'Chính phủ ban hành chương trình', 'Bộ ngành hướng dẫn', 'Địa phương thực hiện', 'Người dân sử dụng dịch vụ công'],
+  },
+  {
+    id: 'tuphap',
+    title: 'Tòa án & Viện kiểm sát',
+    role: 'Tư pháp',
+    icon: Gavel,
+    color: '#c1121f',
+    summary: 'Bảo vệ công lý, quyền con người, quyền công dân; kiểm sát hoạt động tư pháp theo luật định.',
+    structure: [
+      ['TAND tối cao', 'Cơ quan xét xử cao nhất của nước CHXHCN Việt Nam.'],
+      ['TAND cấp tỉnh', 'Xét xử theo thẩm quyền tại địa phương cấp tỉnh.'],
+      ['TAND khu vực', 'Mô hình tòa án theo Luật Tổ chức TAND 2024, thay cho cách hiểu cũ gắn với cấp huyện.'],
+      ['Viện kiểm sát nhân dân', 'Thực hành quyền công tố và kiểm sát hoạt động tư pháp.'],
+    ],
+    workflow: ['Tiếp nhận vụ việc', 'Điều tra, truy tố theo luật', 'Xét xử độc lập', 'Kiểm sát tư pháp', 'Thi hành bản án/quyết định'],
+  },
+];
+
+const transparencyRows = [
+  ['Ý tưởng giao diện', 'AI gợi ý hướng civic-tech, radial hub, dashboard', 'Nhóm tự chọn bố cục cuối, tự chỉnh nội dung và kiểm tra khả năng trình bày.'],
+  ['Câu hỏi minigame', 'AI hỗ trợ phác thảo dạng tình huống', 'Nhóm biên tập lại theo kiến thức môn học, tránh câu hỏi gây hiểu sai thẩm quyền.'],
+  ['Thuật ngữ chính trị', 'AI có thể đề xuất diễn đạt', 'Nhóm đối chiếu với giáo trình, Hiến pháp 2013 và văn bản pháp luật trước khi đưa lên web.'],
+  ['Code và thiết kế', 'AI hỗ trợ gợi ý giao diện và cấu trúc mã', 'Nhóm chịu trách nhiệm vận hành, kiểm thử, quyết định nội dung và cách thuyết trình.'],
+];
+
+const questions = [
+  ['Cơ quan nào có thẩm quyền lập pháp cao nhất?', ['Quốc hội', 'Chính phủ', 'Tòa án nhân dân', 'UBND cấp tỉnh'], 'Quốc hội'],
+  ['Cơ quan nào quyết định vấn đề chiến tranh và hòa bình?', ['Chính phủ', 'Chủ tịch nước', 'Quốc hội', 'TAND tối cao'], 'Quốc hội'],
+  ['Cơ quan nào thực hiện quyền xét xử?', ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Mặt trận Tổ quốc'], 'Tòa án nhân dân'],
+  ['Chính phủ là cơ quan chấp hành của cơ quan nào?', ['Quốc hội', 'TAND tối cao', 'VKSND tối cao', 'UBND cấp tỉnh'], 'Quốc hội'],
+  ['Viện kiểm sát nhân dân thực hành quyền gì?', ['Công tố và kiểm sát tư pháp', 'Lập pháp', 'Ban hành Hiến pháp', 'Quyết định ngân sách lớp'], 'Công tố và kiểm sát tư pháp'],
+  ['Nguyên tắc quyền lực nhà nước ở Việt Nam là gì?', ['Thống nhất, có phân công phối hợp kiểm soát', 'Tam quyền phân lập tuyệt đối', 'Không cần kiểm soát', 'Tập trung ở một cá nhân'], 'Thống nhất, có phân công phối hợp kiểm soát'],
+  ['Đảng lãnh đạo Nhà nước chủ yếu bằng gì?', ['Đường lối, chủ trương, nghị quyết', 'Bản án', 'Giấy phép xây dựng', 'Phiếu điểm'], 'Đường lối, chủ trương, nghị quyết'],
+  ['Cơ quan đại biểu cao nhất của Nhân dân là?', ['Quốc hội', 'Chính phủ', 'TAND khu vực', 'Sở Tư pháp'], 'Quốc hội'],
+  ['Đề án 06 thường gắn với nội dung nào?', ['Dữ liệu dân cư và định danh điện tử', 'Xét xử phúc thẩm', 'Bầu cử đại biểu Quốc hội', 'Kiểm sát truy tố'], 'Dữ liệu dân cư và định danh điện tử'],
+  ['Cơ quan nào tổ chức thi hành pháp luật ở tầm hành chính cao nhất?', ['Chính phủ', 'Quốc hội', 'Tòa án', 'Viện kiểm sát'], 'Chính phủ'],
+  ['Thẩm phán và Hội thẩm khi xét xử phải tuân theo gì?', ['Pháp luật', 'Ý kiến mạng xã hội', 'Bình chọn khán giả', 'Lệnh miệng'], 'Pháp luật'],
+  ['Người dân góp ý dự thảo luật thể hiện nội dung nào?', ['Dân chủ và giám sát xã hội', 'Thay thế Quốc hội', 'Tự ban hành luật', 'Xét xử hành chính'], 'Dân chủ và giám sát xã hội'],
+  ['“Dân biết, dân bàn, dân làm...” nhấn mạnh điều gì?', ['Quyền làm chủ của Nhân dân', 'Quyền lực cá nhân', 'Bỏ qua pháp luật', 'Không cần giải trình'], 'Quyền làm chủ của Nhân dân'],
+  ['Nghị quyết 27-NQ/TW liên quan trực tiếp đến nội dung nào?', ['Xây dựng Nhà nước pháp quyền XHCN', 'Quy định lịch thi', 'Luật giao thông đường thủy', 'Quy chế thể thao'], 'Xây dựng Nhà nước pháp quyền XHCN'],
+  ['Cơ quan nào giám sát tối cao hoạt động của Nhà nước?', ['Quốc hội', 'Chính phủ', 'UBND cấp xã', 'TAND khu vực'], 'Quốc hội'],
+  ['Cơ quan hành chính nhà nước cao nhất là?', ['Chính phủ', 'Quốc hội', 'VKSND tối cao', 'TAND tối cao'], 'Chính phủ'],
+  ['TAND tối cao thuộc nhóm quyền lực nào?', ['Tư pháp', 'Lập pháp', 'Hành pháp', 'Mặt trận'], 'Tư pháp'],
+  ['Quốc hội quyết định vấn đề quan trọng của đất nước thuộc chức năng nào?', ['Quyết định vấn đề quan trọng', 'Công tố', 'Xét xử sơ thẩm', 'Cấp căn cước'], 'Quyết định vấn đề quan trọng'],
+  ['Dịch vụ công trực tuyến là ví dụ của nhóm nào?', ['Hành pháp', 'Tư pháp', 'Lập pháp', 'Kiểm toán lớp học'], 'Hành pháp'],
+  ['Cơ chế giải trình nghĩa là gì?', ['Cơ quan tiếp thu hoặc nêu lý do không tiếp thu', 'Xóa mọi ý kiến trái chiều', 'Chỉ nhận ý kiến đúng', 'Không công khai'], 'Cơ quan tiếp thu hoặc nêu lý do không tiếp thu'],
+  ['Cơ quan nào ban hành luật?', ['Quốc hội', 'Chính phủ', 'TAND khu vực', 'Công an xã'], 'Quốc hội'],
+  ['Cơ quan nào bảo vệ công lý thông qua xét xử?', ['Tòa án nhân dân', 'Bộ Nội vụ', 'Quốc hội', 'HĐND'], 'Tòa án nhân dân'],
+  ['Việc kiểm soát quyền lực nhằm mục tiêu gì?', ['Tránh lạm quyền và bảo vệ quyền lợi hợp pháp', 'Làm chậm mọi quyết định', 'Tăng thủ tục vô nghĩa', 'Bỏ giám sát'], 'Tránh lạm quyền và bảo vệ quyền lợi hợp pháp'],
+  ['Cấp chính quyền địa phương cập nhật đến 7/2026 nên trình bày theo mô hình nào?', ['Cấp tỉnh và cấp xã', 'Tỉnh, huyện, xã như cũ', 'Chỉ có trung ương', 'Chỉ có cấp huyện'], 'Cấp tỉnh và cấp xã'],
+  ['Đại biểu Quốc hội có vai trò nào?', ['Đại diện ý chí, nguyện vọng của Nhân dân', 'Xét xử bị cáo', 'Cấp giấy phép lái xe', 'Kiểm sát điều tra'], 'Đại diện ý chí, nguyện vọng của Nhân dân'],
+  ['Cổng ý kiến Nhân dân trong web mô phỏng nghiệp vụ nào?', ['Tiếp nhận, phân loại, xử lý, giải trình', 'Chơi game giải trí thuần túy', 'Bán hàng', 'Quảng cáo'], 'Tiếp nhận, phân loại, xử lý, giải trình'],
+  ['AI trong bài này được dùng như thế nào?', ['Công cụ tham khảo, nhóm vẫn quyết định nội dung', 'Thay nhóm làm toàn bộ', 'Nguồn pháp luật chính thức', 'Công cụ chấm điểm môn học'], 'Công cụ tham khảo, nhóm vẫn quyết định nội dung'],
+  ['“Nhà nước của Nhân dân, do Nhân dân, vì Nhân dân” nhấn mạnh điều gì?', ['Bản chất phục vụ Nhân dân', 'Quyền lực tách khỏi Nhân dân', 'Không cần bầu cử', 'Không cần pháp luật'], 'Bản chất phục vụ Nhân dân'],
+  ['Khi một chính sách được ban hành, nhóm hành pháp làm gì?', ['Tổ chức thi hành', 'Tuyên án', 'Sửa Hiến pháp một mình', 'Thay đại biểu biểu quyết'], 'Tổ chức thi hành'],
+  ['Hội đồng Dân tộc và các Ủy ban của Quốc hội thường làm gì?', ['Thẩm tra và giám sát chuyên đề', 'Xét xử sơ thẩm', 'Cấp căn cước công dân', 'Điều tra hình sự'], 'Thẩm tra và giám sát chuyên đề'],
+  ['Tòa án nhân dân khu vực thuộc hệ thống nào?', ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Mặt trận Tổ quốc'], 'Tòa án nhân dân'],
+  ['Khi người dân khiếu nại quyền lợi bị xâm phạm, cơ quan xét xử độc lập là?', ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Bộ Tài chính'], 'Tòa án nhân dân'],
+  ['Cơ quan nào công bố lệnh, quyết định theo thẩm quyền trong một số trường hợp sau quyết định của Quốc hội?', ['Chủ tịch nước', 'TAND khu vực', 'UBND xã', 'Ủy ban MTTQ'], 'Chủ tịch nước'],
+  ['Trong bài học, không nên trình bày Việt Nam theo mô hình nào?', ['Tam quyền phân lập tuyệt đối', 'Quyền lực thống nhất', 'Có kiểm soát quyền lực', 'Có phân công phối hợp'], 'Tam quyền phân lập tuyệt đối'],
+  ['Cải cách tư pháp gắn với yêu cầu nào?', ['Bảo vệ công lý và quyền con người', 'Bỏ xét xử', 'Giảm minh bạch', 'Tăng tùy tiện'], 'Bảo vệ công lý và quyền con người'],
+  ['Chính quyền địa phương thực hiện nhiệm vụ theo nguyên tắc nào?', ['Theo Hiến pháp, luật và phân quyền, phân cấp', 'Tự ý trái luật', 'Không cần trách nhiệm', 'Chỉ theo bình chọn'], 'Theo Hiến pháp, luật và phân quyền, phân cấp'],
+  ['Một dự thảo chính sách cần lấy ý kiến để làm gì?', ['Tăng dân chủ, hoàn thiện chính sách', 'Làm trang trí', 'Thay thế toàn bộ quy trình lập pháp', 'Bỏ qua chuyên môn'], 'Tăng dân chủ, hoàn thiện chính sách'],
+  ['Bảng thống kê lỗi sai trong game giúp gì?', ['Nhận diện phần kiến thức lớp hay nhầm', 'Chọn người thắng theo cảm tính', 'Ẩn lỗi sai', 'Xóa điểm đúng'], 'Nhận diện phần kiến thức lớp hay nhầm'],
+  ['Leaderboard xếp hạng theo tiêu chí nào?', ['Điểm cao hơn, nếu bằng điểm thì thời gian ngắn hơn', 'Tên dài hơn', 'Vào chơi trước luôn thắng', 'Chọn ngẫu nhiên'], 'Điểm cao hơn, nếu bằng điểm thì thời gian ngắn hơn'],
+  ['Cơ chế kiểm soát quyền lực gồm nội dung nào?', ['Phân công, phối hợp, giám sát, kiểm tra, xét xử, kiểm sát', 'Không ai kiểm tra ai', 'Chỉ có một cơ quan tự quyết mọi việc', 'Bỏ trách nhiệm giải trình'], 'Phân công, phối hợp, giám sát, kiểm tra, xét xử, kiểm sát'],
+  ['Bộ, cơ quan ngang bộ thuộc nhánh nào?', ['Hành pháp', 'Tư pháp', 'Lập pháp', 'Cử tri'], 'Hành pháp'],
+  ['Một phiên chất vấn Quốc hội thể hiện chức năng gì?', ['Giám sát và yêu cầu giải trình', 'Xét xử hình sự', 'Cấp căn cước', 'Công tố'], 'Giám sát và yêu cầu giải trình'],
+  ['Viện kiểm sát khác Tòa án ở điểm nào?', ['Kiểm sát và công tố, không phải cơ quan xét xử', 'Làm luật', 'Quyết định chiến tranh', 'Quản lý dịch vụ công'], 'Kiểm sát và công tố, không phải cơ quan xét xử'],
+  ['Thượng tôn Hiến pháp và pháp luật nghĩa là gì?', ['Mọi chủ thể hoạt động trong khuôn khổ pháp luật', 'Luật chỉ để tham khảo', 'Cơ quan nào cũng tùy ý', 'Không cần văn bản'], 'Mọi chủ thể hoạt động trong khuôn khổ pháp luật'],
+  ['Nhân dân giám sát Nhà nước thông qua kênh nào?', ['Góp ý, tiếp xúc cử tri, phản biện, khiếu nại, tố cáo theo luật', 'Chỉ bình luận ẩn danh', 'Tự tuyên án', 'Tự ban hành nghị định'], 'Góp ý, tiếp xúc cử tri, phản biện, khiếu nại, tố cáo theo luật'],
+  ['Mục tiêu của Nhà nước pháp quyền XHCN Việt Nam là?', ['Phục vụ Nhân dân, bảo vệ quyền và lợi ích hợp pháp', 'Tách khỏi Nhân dân', 'Không cần kiểm soát quyền lực', 'Bỏ pháp luật'], 'Phục vụ Nhân dân, bảo vệ quyền và lợi ích hợp pháp'],
+  ['Câu nào đúng về Đảng và Nhà nước?', ['Đảng lãnh đạo, Nhà nước thể chế hóa và tổ chức thực hiện', 'Đảng xét xử thay Tòa án', 'Nhà nước không cần pháp luật', 'Quốc hội không có vai trò lập pháp'], 'Đảng lãnh đạo, Nhà nước thể chế hóa và tổ chức thực hiện'],
+  ['Câu nào đúng về TAND tối cao?', ['Là cơ quan xét xử cao nhất', 'Là cơ quan hành chính cao nhất', 'Là cơ quan đại biểu cao nhất', 'Là tổ chức xã hội nghề nghiệp'], 'Là cơ quan xét xử cao nhất'],
+  ['Trong game, mỗi câu đúng được bao nhiêu điểm?', ['1 điểm', '10 điểm', '100 điểm', 'Tùy người chơi'], '1 điểm'],
+  ['Vì sao hệ thống trộn câu hỏi cho từng lượt chơi?', ['Giảm học tủ, tăng công bằng khi nhiều người tham gia', 'Làm cho thiếu dữ liệu', 'Để ẩn đáp án đúng', 'Để bỏ thống kê'], 'Giảm học tủ, tăng công bằng khi nhiều người tham gia'],
+];
+
+function encodePostgrestIds(ids) {
+  return ids.map((id) => `"${String(id).replaceAll('"', '\\"')}"`).join(',');
+}
+
+async function syncRemoteTable(table, previous, value) {
+  if (!useRemoteDb) return;
+  const headers = {
+    apikey: SUPABASE_KEY,
+    Authorization: `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+    Prefer: 'resolution=merge-duplicates,return=minimal',
+  };
+  const nextIds = new Set(value.map((item) => item.id));
+  const removedIds = previous.map((item) => item.id).filter((id) => !nextIds.has(id));
+  if (removedIds.length) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=in.(${encodePostgrestIds(removedIds)})`, { method: 'DELETE', headers });
+    if (!res.ok) throw new Error(`Cannot delete ${table}`);
+  }
+  if (value.length === 0 && previous.length === 0) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=not.is.null`, { method: 'DELETE', headers });
+    if (!res.ok) throw new Error(`Cannot clear ${table}`);
+    return;
+  }
+  const changed = value.filter((item) => JSON.stringify(item) !== JSON.stringify(previous.find((old) => old.id === item.id)));
+  if (changed.length) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?on_conflict=id`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(changed),
+    });
+    if (!res.ok) throw new Error(`Cannot upsert ${table}`);
+  }
+}
+
+async function readRemoteTable(table) {
+  if (!useRemoteDb) return null;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=*`, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+    },
+  });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+function useRemoteList(table) {
+  const [items, setItems] = useState([]);
+  const [dbStatus, setDbStatus] = useState(useRemoteDb ? 'connecting' : 'missing');
+  useEffect(() => {
+    let alive = true;
+    const sync = async () => {
+      if (!useRemoteDb) {
+        setDbStatus('missing');
+        return;
+      }
+      const remote = await readRemoteTable(table);
+      if (!alive) return;
+      if (remote) {
+        setItems(remote);
+        setDbStatus('connected');
+      } else {
+        setDbStatus('error');
+      }
+    };
+    sync();
+    const timer = useRemoteDb ? window.setInterval(sync, 2500) : null;
+    return () => {
+      alive = false;
+      if (timer) window.clearInterval(timer);
+    };
+  }, [table]);
+  const setStoredItems = (next) => {
+    const value = typeof next === 'function' ? next(items) : next;
+    if (useRemoteDb) {
+      syncRemoteTable(table, items, value)
+        .then(() => setDbStatus('connected'))
+        .catch(() => setDbStatus('error'));
+    } else {
+      setDbStatus('missing');
+    }
+    setItems(value);
+  };
+  return [items, setStoredItems, dbStatus];
+}
+
+function shufflePick(seedSource, count) {
+  const list = questions.map((q, index) => ({ id: `q${index + 1}`, text: q[0], options: q[1], answer: q[2] }));
+  let seed = seedSource.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) || Date.now();
+  for (let i = list.length - 1; i > 0; i -= 1) {
+    seed = (seed * 9301 + 49297) % 233280;
+    const j = seed % (i + 1);
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  return list.slice(0, count);
+}
+
+function scrollToId(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState('hero');
+  useEffect(() => {
+    const updateActive = () => {
+      const anchor = window.scrollY + 140;
+      const current = navItems.reduce((active, item) => {
+        const section = document.getElementById(item.id);
+        if (!section) return active;
+        return section.offsetTop <= anchor ? item.id : active;
+      }, 'hero');
+      setActiveId(current);
+    };
+    updateActive();
+    window.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', updateActive);
+    return () => {
+      window.removeEventListener('scroll', updateActive);
+      window.removeEventListener('resize', updateActive);
+    };
+  }, []);
+  const goTo = (id) => {
+    setActiveId(id);
+    scrollToId(id);
+  };
+  return (
+    <header className="topbar">
+      <button className={`brand ${activeId === 'hero' ? 'active' : ''}`} onClick={() => goTo('hero')} aria-label="Về đầu trang">
+        <span className="brand-mark"><Star size={18} fill="currentColor" /></span>
+        <span>Hành trình Pháp quyền</span>
+      </button>
+      <nav className="desktop-nav">
+        {navItems.map((item) => <button key={item.id} className={activeId === item.id ? 'active' : ''} onClick={() => goTo(item.id)}>{item.label}</button>)}
+      </nav>
+      <button className="mobile-toggle" onClick={() => setOpen((v) => !v)} aria-label="Mở menu">
+        {open ? <X size={20} /> : <Menu size={20} />}
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.nav className="mobile-nav" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
+            {navItems.map((item) => <button key={item.id} className={activeId === item.id ? 'active' : ''} onClick={() => { goTo(item.id); setOpen(false); }}>{item.label}</button>)}
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+function HeroSection() {
+  const [activated, setActivated] = useState(false);
+  return (
+    <section id="hero" className="hero-section">
+      <img src={heroImage} alt="" className="hero-bg" />
+      <div className="hero-overlay" />
+      <div className="hero-content">
+        <motion.div className="hero-copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
+          <span className="eyebrow">MLN131 - Nhóm 3</span>
+          <h1>Hành trình Pháp quyền</h1>
+          <p>Mô hình tương tác về Dân chủ XHCN, Nhà nước pháp quyền Việt Nam và cơ chế vận hành quyền lực trong thời đại số.</p>
+          <div className="hero-actions">
+            <button className="primary-btn" onClick={() => setActivated(true)}><Play size={18} fill="currentColor" /> Bắt đầu hành trình</button>
+            <button className="ghost-btn" onClick={() => window.open(`${window.location.origin}${window.location.pathname}?game=1`, '_blank', 'noopener,noreferrer')}>Mở cửa sổ game</button>
+          </div>
+          <div className="fact-row">
+            <span><ShieldCheck size={16} /> Quyền lực thuộc về Nhân dân</span>
+            <span><Network size={16} /> Phân công, phối hợp, kiểm soát</span>
+          </div>
+        </motion.div>
+
+        <motion.div className="hub-shell glass-card" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
+          <div className="hub-header">
+            <strong>Trống đồng dẫn lối pháp quyền</strong>
+            <span>{activated ? 'Các lát cắt quyền lực đã mở' : 'Khởi động để khám phá sơ đồ'}</span>
+          </div>
+          <div className={`radial-hub ${activated ? 'activated' : ''}`}>
+            <img className="real-drum-photo" src={drumPhotoUrl} alt="Mặt trống đồng Ngọc Lũ, nguồn Bảo tàng Lịch sử Quốc gia" />
+            <svg className="hub-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <circle cx="50" cy="50" r="21" />
+              <circle cx="50" cy="50" r="34" className="dash" />
+              {hubNodes.map((node) => <motion.line key={`${node.label}-line`} x1="50" y1="50" x2={node.x} y2={node.y} initial={{ pathLength: 0 }} animate={{ pathLength: activated ? 1 : 0 }} />)}
+            </svg>
+            <motion.div className="drum-core" animate={{ scale: activated ? [1, 1.03, 1] : 1 }} transition={{ duration: 1.8, repeat: activated ? Infinity : 0 }}>
+              <DongSonDrum size={240} />
+            </motion.div>
+            {hubNodes.map((node, index) => {
+              const Icon = node.icon;
+              return (
+                <motion.button
+                  key={`${node.label}-${index}`}
+                  className="hub-node"
+                  style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                  initial={{ opacity: 0, scale: 0.82 }}
+                  animate={{ opacity: activated ? 1 : index < 3 ? 0.72 : 0, scale: activated ? 1 : 0.92 }}
+                  transition={{ duration: 0.45, delay: activated ? index * 0.05 : 0 }}
+                  onClick={() => scrollToId(node.id)}
+                >
+                  <Icon size={16} />
+                  <span>{node.label}</span>
+                  <small>{node.tip}</small>
+                </motion.button>
+              );
+            })}
+          </div>
+          <p className="drum-source">Ảnh nền: Trống đồng Ngọc Lũ - Bảo tàng Lịch sử Quốc gia.</p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function PartySection() {
+  const [open, setOpen] = useState(0);
+  return (
+    <section id="party" className="section">
+      <div className="section-grid two">
+        <div>
+          <span className="eyebrow red">Điều 4 Hiến pháp 2013</span>
+          <h2>Đảng lãnh đạo bằng đường lối, Nhà nước quản lý bằng pháp luật</h2>
+          <p className="lead">Từ định hướng chính trị đến thể chế hóa bằng pháp luật, phần này làm rõ cách vai trò lãnh đạo được đặt trong khuôn khổ Hiến pháp và pháp luật.</p>
+        </div>
+        <div className="glass-card party-panel">
+          {partyMechanisms.map((item, index) => (
+            <div className={`accordion-item ${open === index ? 'open' : ''}`} key={item.title}>
+              <button className="mechanism-row" onClick={() => setOpen(open === index ? -1 : index)}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{item.title}</strong>
+                {open === index ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+              </button>
+              <AnimatePresence>
+                {open === index && (
+                  <motion.div className="accordion-body" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                    <p>{item.body}</p>
+                    <small>{item.evidence}</small>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BranchesSection() {
+  const [activeId, setActiveId] = useState('quochoi');
+  const [view, setView] = useState('structure');
+  const [selectedOrgIndex, setSelectedOrgIndex] = useState(0);
+  const active = stateBranches.find((branch) => branch.id === activeId) || stateBranches[0];
+  const ActiveIcon = active.icon;
+  const activeOrg = active.structure[selectedOrgIndex] || active.structure[0];
+  useEffect(() => {
+    setSelectedOrgIndex(0);
+  }, [activeId, view]);
+  return (
+    <section id="branches" className="section light-band">
+      <div className="section-head center">
+        <span className="eyebrow">Bộ máy nhà nước - cập nhật tháng 7/2026</span>
+        <h2>Quyền lực nhà nước là thống nhất</h2>
+        <p className="lead">Chọn từng cơ quan để xem cấu trúc, thẩm quyền và luồng vận hành. Nội dung tránh tự bịa số liệu, chỉ trình bày nguyên tắc và cấu trúc pháp lý cần cho bài học.</p>
+      </div>
+      <div className="branch-tabs">
+        {stateBranches.map((branch) => {
+          const Icon = branch.icon;
+          return <button key={branch.id} className={activeId === branch.id ? 'active' : ''} onClick={() => setActiveId(branch.id)} style={{ '--accent': branch.color }}><Icon size={18} /> {branch.title}</button>;
+        })}
+      </div>
+      <div className="branch-mode">
+        <button className={view === 'structure' ? 'active' : ''} onClick={() => setView('structure')}>Cấu trúc</button>
+        <button className={view === 'workflow' ? 'active' : ''} onClick={() => setView('workflow')}>Luồng vận hành</button>
+        <button className={view === 'sources' ? 'active' : ''} onClick={() => setView('sources')}>Ghi chú kiểm chứng</button>
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.div key={`${active.id}-${view}`} className="branch-showcase glass-card" style={{ '--accent': active.color }} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}>
+          <div className="branch-visual">
+            <ActiveIcon size={44} />
+            <h3>{active.title}</h3>
+            <span>{active.role}</span>
+            <p>{active.summary}</p>
+          </div>
+          <div className="branch-detail">
+            {view === 'structure' && (
+              <div className="org-explorer">
+                <div className="org-list">
+                  {active.structure.map(([name, desc], index) => (
+                    <button
+                      key={name}
+                      className={selectedOrgIndex === index ? 'active' : ''}
+                      onClick={() => setSelectedOrgIndex(index)}
+                      type="button"
+                    >
+                      <strong>{name}</strong>
+                      <span>{desc}</span>
+                    </button>
+                  ))}
+                </div>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${active.id}-${selectedOrgIndex}`}
+                    className="org-detail-card"
+                    initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                    transition={{ duration: 0.22 }}
+                  >
+                    <span>Chi tiết cấu trúc</span>
+                    <h4>{activeOrg[0]}</h4>
+                    <p>{activeOrg[1]}</p>
+                    <div className="org-detail-grid">
+                      <div>
+                        <b>Vai trò trong bộ máy</b>
+                        <small>{active.role} - thuộc nhóm {active.title} trong mô hình quyền lực nhà nước thống nhất.</small>
+                      </div>
+                      <div>
+                        <b>Liên hệ vận hành</b>
+                        <small>{active.workflow[Math.min(selectedOrgIndex, active.workflow.length - 1)]}</small>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            )}
+            {view === 'workflow' && (
+              <div className="workflow-rail">
+                {active.workflow.map((step, index) => <div key={step}><span>{index + 1}</span><strong>{step}</strong></div>)}
+              </div>
+            )}
+            {view === 'sources' && (
+              <div className="source-list">
+                {officialNotes.map((note) => <p key={note}><ClipboardCheck size={16} /> {note}</p>)}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </section>
+  );
+}
+
+function FeedbackPortal() {
+  const [items, setItems, dbStatus] = useRemoteList('hpq_feedback');
+  const [draft, setDraft] = useState('Luật Bảo vệ dữ liệu cá nhân');
+  const [content, setContent] = useState('');
+  const visibleItems = [...items].sort((a, b) => new Date(b.createdAt || b.at || 0) - new Date(a.createdAt || a.at || 0));
+  const addFeedback = () => {
+    if (!content.trim()) return;
+    const now = new Date();
+    setItems((prev) => [
+      {
+        id: crypto.randomUUID(),
+        draft,
+        content: content.trim(),
+        status: 'received',
+        createdAt: now.toISOString(),
+        timeline: [{ label: 'Tiếp nhận ý kiến', at: now.toLocaleString('vi-VN') }],
+      },
+      ...prev,
+    ]);
+    setContent('');
+  };
+  const updateStatus = (id, status, label) => {
+    setItems((prev) => prev.map((item) => {
+      if (item.id !== id) return item;
+      if (['accepted', 'explained'].includes(item.status)) return item;
+      if (status === 'reviewing' && item.status !== 'received') return item;
+      if (['accepted', 'explained'].includes(status) && item.status !== 'reviewing') return item;
+      return { ...item, status, timeline: [...(item.timeline || []), { label, at: new Date().toLocaleString('vi-VN') }] };
+    }));
+  };
+  const deleteResolvedFeedback = (id) => {
+    setItems((prev) => prev.filter((item) => item.id !== id || !['accepted', 'explained'].includes(item.status)));
+  };
+  const statusLabel = { received: 'Đã tiếp nhận', reviewing: 'Đang xử lý', accepted: 'Đã tiếp thu', explained: 'Có giải trình' };
+  return (
+    <section id="feedback" className="section feedback-section">
+      <div className="section-head">
+        <span className="eyebrow cyan">Cơ chế giải trình</span>
+        <h2>Cổng tiếp nhận ý kiến Nhân dân</h2>
+        <p className="lead">Luồng nghiệp vụ hoạt động thật trên giao diện: gửi ý kiến, chuyển trạng thái, lưu timeline và công khai tiến độ xử lý.</p>
+      </div>
+      <div className="feedback-layout">
+        <div className="glass-card feedback-form">
+          <label>Dự thảo đang lấy ý kiến</label>
+          <select value={draft} onChange={(e) => setDraft(e.target.value)}>
+            <option>Luật Bảo vệ dữ liệu cá nhân</option>
+            <option>Cải cách thủ tục hành chính số</option>
+            <option>Cơ chế giám sát quyền lực nhà nước</option>
+          </select>
+          <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Nhập ý kiến của người tham gia..." />
+          <button className="primary-btn" onClick={addFeedback}><MessageSquareText size={17} /> Gửi vào quy trình</button>
+        </div>
+        <div className="feedback-stack">
+          <div className="feedback-list-head">
+            <div>
+              <strong>Danh sách ý kiến</strong>
+              <span>{visibleItems.length} hồ sơ đang ghi nhận</span>
+            </div>
+            <DbStatusBadge status={dbStatus} />
+          </div>
+          {visibleItems.length === 0 && <div className="glass-card empty-state">Chưa có ý kiến nào. Hãy nhập một ý kiến để thấy quy trình xử lý thật.</div>}
+          {visibleItems.map((item) => (
+            <motion.div className="glass-card feedback-item" key={item.id} layout>
+              <div className="feedback-meta">
+                <span>{statusLabel[item.status]}</span>
+                <small>{item.createdAt ? new Date(item.createdAt).toLocaleString('vi-VN') : ''}</small>
+              </div>
+              <strong>{item.draft}</strong>
+              <p>{item.content}</p>
+              {!['accepted', 'explained'].includes(item.status) && (
+                <div className="feedback-actions">
+                  {item.status === 'received' && <button onClick={() => updateStatus(item.id, 'reviewing', 'Chuyển chuyên viên xử lý')}>Chờ xử lý</button>}
+                  <button disabled={item.status !== 'reviewing'} onClick={() => updateStatus(item.id, 'accepted', 'Tiếp thu vào báo cáo tổng hợp')}>Tiếp thu</button>
+                  <button disabled={item.status !== 'reviewing'} onClick={() => updateStatus(item.id, 'explained', 'Không tiếp thu và ghi nhận giải trình')}>Có giải trình</button>
+                </div>
+              )}
+              {item.status === 'accepted' && <div className="final-status accepted">Kết thúc: ý kiến đã được tiếp thu.</div>}
+              {item.status === 'explained' && <div className="final-status explained">Kết thúc: không tiếp thu và đã ghi nhận giải trình.</div>}
+              {['accepted', 'explained'].includes(item.status) && (
+                <button className="feedback-delete" onClick={() => deleteResolvedFeedback(item.id)}>
+                  <Trash2 size={15} /> Xóa hồ sơ đã xử lý
+                </button>
+              )}
+              <ol className="timeline">
+                {(item.timeline || []).slice(-3).map((event, index) => <li key={`${event.label}-${index}`}><b>{event.label}</b><small>{event.at}</small></li>)}
+              </ol>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function QuizHost() {
+  const [players, setPlayers, dbStatus] = useRemoteList('hpq_players');
+  const gameUrl = `${window.location.origin}${window.location.pathname}?game=1`;
+  const sorted = [...players].sort((a, b) => b.score - a.score || a.duration - b.duration);
+  const wrongMap = players.flatMap((p) => p.wrong || []).reduce((acc, id) => ({ ...acc, [id]: (acc[id] || 0) + 1 }), {});
+  const chart = Object.entries(wrongMap)
+    .map(([id, value]) => ({ id, name: id.toUpperCase(), value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 8);
+  return (
+    <section id="quiz" className="section dark-band">
+      <div className="section-head center">
+        <span className="eyebrow">Đấu trường thẩm quyền</span>
+        <h2>Thử tài phân loại thẩm quyền</h2>
+        <p className="lead">Mỗi lượt chơi là một thử thách nhận diện đúng cơ quan, đúng quyền hạn và đúng quy trình. Điểm số giúp cả lớp thấy phần kiến thức nào còn dễ nhầm.</p>
+      </div>
+      <div className="quiz-host-grid">
+        <div className="glass-card qr-host">
+          <QRCodeSVG value={gameUrl} size={220} fgColor="#1f2937" />
+          <strong>Quét mã để mở cửa sổ trò chơi</strong>
+          <DbStatusBadge status={dbStatus} />
+          <button className="primary-btn" onClick={() => window.open(gameUrl, '_blank', 'noopener,noreferrer')}>Vào thử thách</button>
+        </div>
+        <div className="glass-card leaderboard-card">
+          <div className="card-head">
+            <h3>Bảng xếp hạng</h3>
+            <button onClick={() => setPlayers([])}><Trash2 size={15} /> Clear</button>
+          </div>
+          {sorted.length === 0 ? <p>Chưa có lượt chơi nào.</p> : sorted.map((p, i) => (
+            <div className="rank-row" key={p.id}><strong>#{i + 1} {p.name}</strong><span>{p.score}/20 - {p.duration}s</span></div>
+          ))}
+        </div>
+      </div>
+      <div className="analytics-grid">
+        <div className="glass-card chart-card">
+          <h3>Thống kê câu sai nhiều nhất</h3>
+          {chart.length === 0 ? <p>Chưa có dữ liệu sai. Thống kê sẽ xuất hiện sau khi có người chơi.</p> : (
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={chart}>
+                <XAxis dataKey="name" stroke="#64748b" />
+                <YAxis stroke="#64748b" allowDecimals={false} />
+                <Tooltip />
+                <Bar dataKey="value" radius={[8, 8, 0, 0]}>{chart.map((entry, index) => <Cell key={entry.id} fill={index === 0 ? '#c1121f' : '#d4a017'} />)}</Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+        <div className="glass-card chart-card">
+          <h3>Tỷ lệ đúng/sai toàn lớp</h3>
+          <ResponsiveContainer width="100%" height={190}>
+            <PieChart>
+              <Pie data={[{ name: 'Đúng', value: players.reduce((s, p) => s + p.score, 0) }, { name: 'Sai', value: players.reduce((s, p) => s + (20 - p.score), 0) }]} dataKey="value" innerRadius={50} outerRadius={76}>
+                <Cell fill="#00a6c8" />
+                <Cell fill="#c1121f" />
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+          <p>{players.length} lượt chơi đã ghi nhận. Điểm cao hơn xếp trước; nếu bằng điểm thì thời gian ngắn hơn xếp trước.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function GameApp() {
+  const [players, setPlayers, dbStatus] = useRemoteList('hpq_players');
+  const [name, setName] = useState('');
+  const [startedAt, setStartedAt] = useState(null);
+  const [paper, setPaper] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const [done, setDone] = useState(false);
+  const current = paper[index];
+  const start = () => {
+    const id = `${name}-${Date.now()}-${Math.random()}`;
+    setPaper(shufflePick(id, 20));
+    setStartedAt(Date.now());
+    setIndex(0);
+    setAnswers([]);
+    setDone(false);
+  };
+  const answer = (option) => {
+    const correct = option === current.answer;
+    const nextAnswers = [...answers, { id: current.id, correct, option }];
+    setAnswers(nextAnswers);
+    if (index === 19) {
+      const duration = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
+      const score = nextAnswers.filter((a) => a.correct).length;
+      setPlayers((prev) => [...prev, { id: crypto.randomUUID(), name, score, duration, wrong: nextAnswers.filter((a) => !a.correct).map((a) => a.id), at: new Date().toISOString() }]);
+      setDone(true);
+    } else {
+      setIndex((i) => i + 1);
+    }
+  };
+  const sorted = [...players].sort((a, b) => b.score - a.score || a.duration - b.duration).slice(0, 10);
+  return (
+    <main className="game-page">
+      <section className="game-card glass-card">
+        {!paper.length && (
+          <>
+            <div className="game-identity">
+              <span className="vn-flag" aria-label="Cờ đỏ sao vàng Việt Nam"><Star size={30} fill="currentColor" /></span>
+              <div>
+                <strong>Hành trình Pháp quyền</strong>
+                <small>Tôn trọng Hiến pháp, pháp luật và chủ quyền Việt Nam</small>
+              </div>
+            </div>
+            <span className="eyebrow">Lượt thi thẩm quyền</span>
+            <h1>Thử tài phân loại thẩm quyền</h1>
+            <p>Mỗi lượt thi gồm các câu hỏi được xáo trộn để kiểm tra hiểu biết thật. Mỗi câu đúng được 1 điểm.</p>
+            <div className="institution-strip">
+              <span><Landmark size={16} /> Quốc hội</span>
+              <span><Building2 size={16} /> Chính phủ</span>
+              <span><Scale size={16} /> Tòa án & VKS</span>
+              <span><MessageSquareText size={16} /> Nhân dân giám sát</span>
+            </div>
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Tên người chơi" />
+            <button className="primary-btn" disabled={!name.trim()} onClick={start}><Play size={17} /> Bắt đầu</button>
+          </>
+        )}
+        {paper.length > 0 && !done && current && (
+          <>
+            <div className="question-meta"><span>Câu {index + 1}/20</span><span><Timer size={15} /> {Math.round((Date.now() - startedAt) / 1000)}s</span></div>
+            <h2>{current.text}</h2>
+            <div className="option-grid">{current.options.map((option) => <button key={option} onClick={() => answer(option)}>{option}</button>)}</div>
+          </>
+        )}
+        {done && (
+          <>
+            <span className="result good">Hoàn thành</span>
+            <h1>{name}: {answers.filter((a) => a.correct).length}/20 điểm</h1>
+            <p>Điểm đã được ghi vào bảng xếp hạng của trang chính.</p>
+            <button className="primary-btn" onClick={() => { setPaper([]); setName(''); }}>Chơi lượt khác</button>
+          </>
+        )}
+      </section>
+      <aside className="game-rank glass-card">
+        <div className="game-rank-head">
+          <h3>Top hiện tại</h3>
+          <DbStatusBadge status={dbStatus} />
+        </div>
+        {sorted.length === 0 ? <p>Chưa có dữ liệu.</p> : sorted.map((p, i) => <div className="rank-row" key={p.id}><strong>#{i + 1} {p.name}</strong><span>{p.score}/20 - {p.duration}s</span></div>)}
+      </aside>
+    </main>
+  );
+}
+
+function TransparencyHub() {
+  return (
+    <section id="transparency" className="section">
+      <div className="section-head center">
+        <span className="eyebrow cyan">Minh bạch học thuật</span>
+        <h2>AI chỉ là công cụ tham khảo</h2>
+        <p className="lead">Nhóm tự quyết định nội dung, kiểm chứng thuật ngữ và chịu trách nhiệm thuyết trình. AI không được xem là nguồn pháp lý chính thức.</p>
+      </div>
+      <div className="glass-card transparency-table">
+        <div className="table-row head"><span>Hạng mục</span><span>AI hỗ trợ</span><span>Nhóm thực hiện</span></div>
+        {transparencyRows.map((row) => <div className="table-row" key={row[0]}>{row.map((cell) => <span key={cell}>{cell}</span>)}</div>)}
+      </div>
+      <div className="badge-row">
+        {['Verified by team', 'Academic integrity', 'Human-reviewed content'].map((badge) => <span key={badge}><ClipboardCheck size={15} /> {badge}</span>)}
+      </div>
+    </section>
+  );
+}
 
 export default function App() {
+  const isGame = new URLSearchParams(window.location.search).get('game') === '1';
+  if (isGame) return <GameApp />;
   return (
-    <div className="relative min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      <Sidebar />
-
-      <div className="pl-0 md:pl-[68px] flex flex-col min-h-screen">
-        <main className="flex-grow">
-          <HeroSection />
-          <BranchesSection />
-          <FeedbackPortal />
-          <QuizDashboard />
-          <TransparencyHub />
-        </main>
-
-        <footer
-          className="text-center py-12"
-          style={{
-            borderTop: '1px solid var(--border)',
-            background: 'var(--bg-secondary)',
-          }}
-        >
-          <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-heading)' }}>
-            Hành trình Pháp quyền
-          </p>
-          <p className="text-xs" style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
-            MLN131 - Nhóm 3 | Dân chủ XHCN & Nhà nước Pháp quyền Việt Nam
-          </p>
-          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
-            © 2026 - Mockup phục vụ thuyết trình học thuật
-          </p>
-        </footer>
-      </div>
+    <div>
+      <Navbar />
+      <main>
+        <HeroSection />
+        <PartySection />
+        <BranchesSection />
+        <FeedbackPortal />
+        <QuizHost />
+        <TransparencyHub />
+      </main>
+      <footer className="footer">
+        <strong>Hành trình Pháp quyền</strong>
+        <span>MLN131 - Nhóm 3 | Không gian tương tác phục vụ thuyết trình, thảo luận và ghi nhận kết quả tham gia của lớp</span>
+      </footer>
     </div>
   );
 }
