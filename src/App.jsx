@@ -537,7 +537,7 @@ function shufflePick(seedSource, count) {
       const r = Math.floor(Math.random() * (k + 1));
       [options[k], options[r]] = [options[r], options[k]];
     }
-    return { id: `q${index + 1}`, text: q[0], options, answer: q[2] };
+    return { id: `q${index + 1}`, text: q[0], options, answer: q[2], explanation: q[3] };
   });
   let seed = seedSource.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) || Date.now();
   for (let i = list.length - 1; i > 0; i -= 1) {
@@ -1069,6 +1069,8 @@ function GameApp() {
   const [answers, setAnswers] = useState([]);
   const [done, setDone] = useState(false);
   const [timeLeft, setTimeLeft] = useState(QUESTION_SECONDS);
+  const [isShowingAnswer, setIsShowingAnswer] = useState(false);
+  const [currentSelection, setCurrentSelection] = useState(null);
   const current = paper[index];
   const start = () => {
     const id = `${name}-${Date.now()}-${Math.random()}`;
@@ -1078,12 +1080,21 @@ function GameApp() {
     setAnswers([]);
     setDone(false);
     setTimeLeft(QUESTION_SECONDS);
+    setIsShowingAnswer(false);
+    setCurrentSelection(null);
   };
-  const answer = useCallback((option) => {
-    if (!current || done) return;
-    const correct = option === current.answer;
-    const nextAnswers = [...answers, { id: current.id, correct, option }];
+  const handleSelect = useCallback((option) => {
+    if (!current || done || isShowingAnswer) return;
+    setCurrentSelection(option);
+    setIsShowingAnswer(true);
+  }, [current, done, isShowingAnswer]);
+
+  const nextQuestion = useCallback(() => {
+    const correct = currentSelection === current.answer;
+    const nextAnswers = [...answers, { id: current.id, correct, option: currentSelection }];
     setAnswers(nextAnswers);
+    setIsShowingAnswer(false);
+    setCurrentSelection(null);
     if (index === 19) {
       const duration = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
       const score = nextAnswers.filter((a) => a.correct).length;
@@ -1092,9 +1103,10 @@ function GameApp() {
     } else {
       setIndex((i) => i + 1);
     }
-  }, [answers, current, done, index, name, setPlayers, startedAt]);
+  }, [answers, current, currentSelection, index, name, setPlayers, startedAt]);
+
   useEffect(() => {
-    if (!paper.length || done || !current) return undefined;
+    if (!paper.length || done || !current || isShowingAnswer) return undefined;
     setTimeLeft(QUESTION_SECONDS);
     const questionStartedAt = Date.now();
     const timer = window.setInterval(() => {
@@ -1103,11 +1115,11 @@ function GameApp() {
       setTimeLeft(remaining);
       if (remaining === 0) {
         window.clearInterval(timer);
-        answer(null);
+        handleSelect(null);
       }
     }, 250);
     return () => window.clearInterval(timer);
-  }, [answer, current, done, index, paper.length]);
+  }, [handleSelect, current, done, paper.length, isShowingAnswer]);
   const sorted = [...players].sort((a, b) => b.score - a.score || a.duration - b.duration).slice(0, 10);
   return (
     <main className="game-page" style={{ '--game-bg': `url("${page6Bg}")` }}>
@@ -1141,7 +1153,36 @@ function GameApp() {
           <>
             <div className="question-meta"><span>Câu {index + 1}/20</span><span className={timeLeft <= 3 ? 'time-left urgent' : 'time-left'}><Timer size={15} /> {timeLeft}s</span></div>
             <h2>{current.text}</h2>
-            <div className="option-grid">{current.options.map((option) => <button key={option} onClick={() => answer(option)}>{option}</button>)}</div>
+            <div className="option-grid">
+              {current.options.map((option) => {
+                let btnClass = "";
+                if (isShowingAnswer) {
+                  if (option === current.answer) btnClass = "correct";
+                  else if (option === currentSelection) btnClass = "wrong";
+                }
+                return (
+                  <button 
+                    key={option} 
+                    onClick={() => handleSelect(option)}
+                    className={btnClass}
+                    disabled={isShowingAnswer}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
+            {isShowingAnswer && (
+              <div className="answer-feedback">
+                <div className={`feedback-banner ${currentSelection === current.answer ? 'correct' : 'wrong'}`}>
+                  {currentSelection === current.answer ? '✓ Chính xác!' : `✗ Sai rồi! Đáp án đúng là: ${current.answer}`}
+                </div>
+                {current.explanation && <p className="explanation">{current.explanation}</p>}
+                <button className="primary-btn next-btn" onClick={nextQuestion}>
+                  {index === 19 ? 'Xem kết quả' : 'Câu tiếp theo'} <ChevronRight size={17} />
+                </button>
+              </div>
+            )}
           </>
         )}
         {done && (
