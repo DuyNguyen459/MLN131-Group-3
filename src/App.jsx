@@ -156,305 +156,273 @@ const transparencyRows = [
 
 const questions = [
   [
-    'Cơ quan nào có thẩm quyền lập pháp cao nhất?', 
-    ['Quốc hội', 'Chính phủ', 'Tòa án nhân dân', 'UBND cấp tỉnh'], 
+    'Cơ quan nào có thẩm quyền lập pháp cao nhất?',
+    ['Quốc hội', 'Chính phủ', 'Tòa án nhân dân', 'UBND cấp tỉnh'],
     'Quốc hội',
     'Giải thích: Theo Điều 69 Hiến pháp 2013, Quốc hội là cơ quan đại biểu cao nhất của Nhân dân, cơ quan quyền lực nhà nước cao nhất của nước Cộng hòa xã hội chủ nghĩa Việt Nam, thực hiện quyền lập hiến và quyền lập pháp.'
   ],
   [
-    'Cơ quan nào quyết định vấn đề chiến tranh và hòa bình?', 
-    ['Chính phủ', 'Chủ tịch nước', 'Quốc hội', 'TAND tối cao'], 
+    'Cơ quan nào quyết định vấn đề chiến tranh và hòa bình?',
+    ['Chính phủ', 'Chủ tịch nước', 'Quốc hội', 'TAND tối cao'],
     'Quốc hội',
     'Giải thích: Theo Điều 70 Hiến pháp 2013, Quốc hội có nhiệm vụ và quyền hạn quyết định vấn đề chiến tranh và hòa bình, quy định về tình trạng khẩn cấp và các biện pháp đặc biệt khác bảo đảm quốc phòng, an ninh quốc gia.'
   ],
   [
-    'Cơ quan nào thực hiện quyền xét xử?', 
-    ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Mặt trận Tổ quốc'], 
+    'Cơ quan nào thực hiện quyền xét xử?',
+    ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Mặt trận Tổ quốc'],
     'Tòa án nhân dân',
     'Giải thích: Theo Điều 102 Hiến pháp 2013, Tòa án nhân dân là cơ quan xét xử của nước Cộng hòa xã hội chủ nghĩa Việt Nam, thực hiện quyền tư pháp.'
   ],
   [
-    'Chính phủ là cơ quan chấp hành của cơ quan nào?', 
-    ['Quốc hội', 'TAND tối cao', 'VKSND tối cao', 'UBND cấp tỉnh'], 
+    'Chính phủ là cơ quan chấp hành của cơ quan nào?',
+    ['Quốc hội', 'TAND tối cao', 'VKSND tối cao', 'UBND cấp tỉnh'],
     'Quốc hội',
     'Giải thích: Theo Điều 94 Hiến pháp 2013, Chính phủ là cơ quan hành chính nhà nước cao nhất, thực hiện quyền hành pháp và là cơ quan chấp hành của Quốc hội, chịu trách nhiệm và báo cáo công tác trước Quốc hội.'
   ],
   [
-    'Viện kiểm sát nhân dân thực hành quyền gì?', 
-    ['Công tố và kiểm sát tư pháp', 'Lập pháp', 'Ban hành Hiến pháp', 'Quyết định ngân sách lớp'], 
+    'Viện kiểm sát nhân dân thực hành quyền gì?',
+    ['Công tố và kiểm sát tư pháp', 'Lập pháp', 'Ban hành Hiến pháp', 'Quyết định ngân sách lớp'],
     'Công tố và kiểm sát tư pháp',
     'Giải thích: Theo Điều 107 Hiến pháp 2013, Viện kiểm sát nhân dân thực hành quyền công tố (buộc tội của Nhà nước tại tòa) và kiểm sát hoạt động tư pháp (giám sát việc tuân theo pháp luật trong điều tra, xét xử, thi hành án).'
   ],
   [
-    'Nguyên tắc quyền lực nhà nước ở Việt Nam là gì?', 
-    ['Thống nhất, có phân công phối hợp kiểm soát', 'Tam quyền phân lập tuyệt đối', 'Không cần kiểm soát', 'Tập trung ở một cá nhân'], 
+    'Nguyên tắc quyền lực nhà nước ở Việt Nam là gì?',
+    ['Thống nhất, có phân công phối hợp kiểm soát', 'Tam quyền phân lập tuyệt đối', 'Không cần kiểm soát', 'Tập trung ở một cá nhân'],
     'Thống nhất, có phân công phối hợp kiểm soát',
     'Giải thích: Theo Điều 2 Hiến pháp 2013, quyền lực nhà nước là thống nhất, có sự phân công, phối hợp, kiểm soát giữa các cơ quan nhà nước trong việc thực hiện các quyền lập pháp, hành pháp, tư pháp. Không áp dụng tam quyền phân lập đối lập.'
   ],
   [
-    'Đảng lãnh đạo Nhà nước chủ yếu bằng gì?', 
-    ['Đường lối, chủ trương, nghị quyết', 'Bản án', 'Giấy phép xây dựng', 'Phiếu điểm'], 
+    'Đảng lãnh đạo Nhà nước chủ yếu bằng gì?',
+    ['Đường lối, chủ trương, nghị quyết', 'Bản án', 'Giấy phép xây dựng', 'Phiếu điểm'],
     'Đường lối, chủ trương, nghị quyết',
     'Giải thích: Đảng Cộng sản Việt Nam lãnh đạo Nhà nước và xã hội bằng Cương lĩnh, chiến lược, các định hướng về chính sách và chủ trương lớn (thông qua các Nghị quyết); Nhà nước sẽ thể chế hóa đường lối của Đảng thành Hiến pháp và pháp luật để quản lý xã hội.'
   ],
   [
-    'Cơ quan đại biểu cao nhất của Nhân dân là?', 
-    ['Quốc hội', 'Chính phủ', 'TAND khu vực', 'Sở Tư pháp'], 
+    'Cơ quan đại biểu cao nhất của Nhân dân là?',
+    ['Quốc hội', 'Chính phủ', 'TAND khu vực', 'Sở Tư pháp'],
     'Quốc hội',
     'Giải thích: Quốc hội do cử tri cả nước thông qua bầu cử phổ thông, bình đẳng, trực tiếp và bỏ phiếu kín bầu ra, là cơ quan đại biểu cao nhất đại diện cho ý chí, nguyện vọng và quyền làm chủ của toàn dân.'
   ],
   [
-    'Đề án 06 thường gắn với nội dung nào?', 
-    ['Dữ liệu dân cư và định danh điện tử', 'Xét xử phúc thẩm', 'Bầu cử đại biểu Quốc hội', 'Kiểm sát truy tố'], 
+    'Đề án 06 thường gắn với nội dung nào?',
+    ['Dữ liệu dân cư và định danh điện tử', 'Xét xử phúc thẩm', 'Bầu cử đại biểu Quốc hội', 'Kiểm sát truy tố'],
     'Dữ liệu dân cư và định danh điện tử',
     'Giải thích: Đề án 06 là "Đề án phát triển ứng dụng dữ liệu về dân cư, định danh và xác thực điện tử phục vụ chuyển đổi số quốc gia giai đoạn 2022 - 2025, tầm nhìn đến năm 2030", là minh chứng điển hình cho quản lý hành pháp hiện đại phục vụ Nhân dân.'
   ],
   [
-    'Cơ quan nào tổ chức thi hành pháp luật ở tầm hành chính cao nhất?', 
-    ['Chính phủ', 'Quốc hội', 'Tòa án', 'Viện kiểm sát'], 
+    'Cơ quan nào tổ chức thi hành pháp luật ở tầm hành chính cao nhất?',
+    ['Chính phủ', 'Quốc hội', 'Tòa án', 'Viện kiểm sát'],
     'Chính phủ',
     'Giải thích: Chính phủ là cơ quan thực hiện quyền hành pháp, đứng đầu hệ thống hành chính nhà nước từ trung ương đến địa phương, có trách nhiệm tổ chức thi hành Hiến pháp, luật, nghị quyết của Quốc hội trên phạm vi toàn quốc.'
   ],
   [
-    'Thẩm phán và Hội thẩm khi xét xử phải tuân theo gì?', 
-    ['Pháp luật', 'Ý kiến mạng xã hội', 'Bình chọn khán giả', 'Lệnh miệng'], 
+    'Thẩm phán và Hội thẩm khi xét xử phải tuân theo gì?',
+    ['Pháp luật', 'Ý kiến mạng xã hội', 'Bình chọn khán giả', 'Lệnh miệng'],
     'Pháp luật',
     'Giải thích: Theo khoản 2 Điều 103 Hiến pháp 2013, Thẩm phán và Hội thẩm xét xử độc lập và chỉ tuân theo pháp luật; nghiêm cấm mọi cơ quan, tổ chức, cá nhân can thiệp trái pháp luật vào việc xét xử.'
   ],
   [
-    'Người dân góp ý dự thảo luật thể hiện nội dung nào?', 
-    ['Dân chủ và giám sát xã hội', 'Thay thế Quốc hội', 'Tự ban hành luật', 'Xét xử hành chính'], 
+    'Người dân góp ý dự thảo luật thể hiện nội dung nào?',
+    ['Dân chủ và giám sát xã hội', 'Thay thế Quốc hội', 'Tự ban hành luật', 'Xét xử hành chính'],
     'Dân chủ và giám sát xã hội',
     'Giải thích: Việc người dân tham gia đóng góp ý kiến, phản biện vào các dự thảo luật là biểu hiện trực tiếp của nền dân chủ XHCN, thể hiện quyền làm chủ và giám sát phản biện xã hội đối với hoạt động lập pháp của Nhà nước.'
   ],
   [
-    '“Dân biết, dân bàn, dân làm...” nhấn mạnh điều gì?', 
-    ['Quyền làm chủ của Nhân dân', 'Quyền lực cá nhân', 'Bỏ qua pháp luật', 'Không cần giải trình'], 
+    '“Dân biết, dân bàn, dân làm...” nhấn mạnh điều gì?',
+    ['Quyền làm chủ của Nhân dân', 'Quyền lực cá nhân', 'Bỏ qua pháp luật', 'Không cần giải trình'],
     'Quyền làm chủ của Nhân dân',
     'Giải thích: Phương châm "Dân biết, dân bàn, dân làm, dân kiểm tra, dân giám sát, dân thụ hưởng" thể hiện bản chất của nền dân chủ XHCN, khẳng định Nhân dân là chủ thể tối cao của quyền lực nhà nước.'
   ],
   [
-    'Nghị quyết 27-NQ/TW liên quan trực tiếp đến nội dung nào?', 
-    ['Xây dựng Nhà nước pháp quyền XHCN', 'Quy định lịch thi', 'Luật giao thông đường thủy', 'Quy chế thể thao'], 
+    'Nghị quyết 27-NQ/TW liên quan trực tiếp đến nội dung nào?',
+    ['Xây dựng Nhà nước pháp quyền XHCN', 'Quy định lịch thi', 'Luật giao thông đường thủy', 'Quy chế thể thao'],
     'Xây dựng Nhà nước pháp quyền XHCN',
     'Giải thích: Nghị quyết số 27-NQ/TW ngày 09/11/2022 của Hội nghị Trung ương 6 khóa XIII là Nghị quyết chuyên đề quan trọng về "Tiếp tục xây dựng và hoàn thiện Nhà nước pháp quyền xã hội chủ nghĩa Việt Nam trong giai đoạn mới".'
   ],
   [
-    'Cơ quan nào giám sát tối cao hoạt động của Nhà nước?', 
-    ['Quốc hội', 'Chính phủ', 'UBND cấp xã', 'TAND khu vực'], 
+    'Cơ quan nào giám sát tối cao hoạt động của Nhà nước?',
+    ['Quốc hội', 'Chính phủ', 'UBND cấp xã', 'TAND khu vực'],
     'Quốc hội',
     'Giải thích: Theo Điều 69 Hiến pháp 2013, Quốc hội thực hiện quyền giám sát tối cao việc tuân theo Hiến pháp, luật và nghị quyết của Quốc hội đối với toàn bộ hoạt động của các cơ quan trong bộ máy nhà nước.'
   ],
   [
-    'Cơ quan hành chính nhà nước cao nhất là?', 
-    ['Chính phủ', 'Quốc hội', 'VKSND tối cao', 'TAND tối cao'], 
+    'Cơ quan hành chính nhà nước cao nhất là?',
+    ['Chính phủ', 'Quốc hội', 'VKSND tối cao', 'TAND tối cao'],
     'Chính phủ',
     'Giải thích: Theo Điều 94 Hiến pháp 2013, Chính phủ là cơ quan hành chính nhà nước cao nhất của nước Cộng hòa xã hội chủ nghĩa Việt Nam, quản lý thống nhất nền hành chính quốc gia.'
   ],
   [
-    'TAND tối cao thuộc nhóm quyền lực nào?', 
-    ['Tư pháp', 'Lập pháp', 'Hành pháp', 'Mặt trận'], 
+    'TAND tối cao thuộc nhóm quyền lực nào?',
+    ['Tư pháp', 'Lập pháp', 'Hành pháp', 'Mặt trận'],
     'Tư pháp',
     'Giải thích: Tòa án nhân dân tối cao là cơ quan xét xử cao nhất của nước ta, đóng vai trò trung tâm và chủ đạo trong việc thực hiện quyền tư pháp, bảo vệ công lý và quyền con người.'
   ],
   [
-    'Quốc hội quyết định vấn đề quan trọng của đất nước thuộc chức năng nào?', 
-    ['Quyết định vấn đề quan trọng', 'Công tố', 'Xét xử sơ thẩm', 'Cấp căn cước'], 
+    'Quốc hội quyết định vấn đề quan trọng của đất nước thuộc chức năng nào?',
+    ['Quyết định vấn đề quan trọng', 'Công tố', 'Xét xử sơ thẩm', 'Cấp căn cước'],
     'Quyết định vấn đề quan trọng',
     'Giải thích: Quốc hội có 3 chức năng hiến định cốt lõi: (1) Lập hiến, lập pháp; (2) Giám sát tối cao; (3) Quyết định các vấn đề quan trọng của đất nước (tài chính, ngân sách, tổ chức bộ máy, nhân sự cao cấp, quốc phòng - an ninh...).'
   ],
   [
-    'Dịch vụ công trực tuyến là ví dụ của nhóm nào?', 
-    ['Hành pháp', 'Tư pháp', 'Lập pháp', 'Kiểm toán lớp học'], 
+    'Dịch vụ công trực tuyến là ví dụ của nhóm nào?',
+    ['Hành pháp', 'Tư pháp', 'Lập pháp', 'Kiểm toán lớp học'],
     'Hành pháp',
     'Giải thích: Dịch vụ công trực tuyến (cấp CCCD, đăng ký kinh doanh, thủ tục đất đai...) là hoạt động quản lý hành chính phục vụ xã hội và tổ chức thi hành pháp luật, thuộc chức năng của nhánh hành pháp.'
   ],
   [
-    'Cơ chế giải trình nghĩa là gì?', 
-    ['Cơ quan tiếp thu hoặc nêu lý do không tiếp thu', 'Xóa mọi ý kiến trái chiều', 'Chỉ nhận ý kiến đúng', 'Không công khai'], 
+    'Cơ chế giải trình nghĩa là gì?',
+    ['Cơ quan tiếp thu hoặc nêu lý do không tiếp thu', 'Xóa mọi ý kiến trái chiều', 'Chỉ nhận ý kiến đúng', 'Không công khai'],
     'Cơ quan tiếp thu hoặc nêu lý do không tiếp thu',
     'Giải thích: Trách nhiệm giải trình đòi hỏi các cơ quan nhà nước khi tiếp nhận ý kiến đóng góp, kiến nghị, phản biện của Nhân dân phải có nghĩa vụ tổng hợp, xem xét tiếp thu, hoặc công khai nêu rõ lý do pháp lý và thực tiễn nếu không tiếp thu.'
   ],
   [
-    'Cơ quan nào ban hành luật?', 
-    ['Quốc hội', 'Chính phủ', 'TAND khu vực', 'Công an xã'], 
+    'Cơ quan nào ban hành luật?',
+    ['Quốc hội', 'Chính phủ', 'TAND khu vực', 'Công an xã'],
     'Quốc hội',
     'Giải thích: Quốc hội là cơ quan duy nhất có quyền thông qua, ban hành Hiến pháp, bộ luật, luật và nghị quyết (thực hiện quyền lập pháp).'
   ],
   [
-    'Cơ quan nào bảo vệ công lý thông qua xét xử?', 
-    ['Tòa án nhân dân', 'Bộ Nội vụ', 'Quốc hội', 'HĐND'], 
+    'Cơ quan nào bảo vệ công lý thông qua xét xử?',
+    ['Tòa án nhân dân', 'Bộ Nội vụ', 'Quốc hội', 'HĐND'],
     'Tòa án nhân dân',
     'Giải thích: Theo Điều 102 Hiến pháp 2013, Tòa án nhân dân có nhiệm vụ bảo vệ công lý, bảo vệ quyền con người, quyền công dân, bảo vệ chế độ XHCN, bảo vệ lợi ích của Nhà nước, quyền và lợi ích hợp pháp của tổ chức, cá nhân thông qua xét xử.'
   ],
   [
-    'Việc kiểm soát quyền lực nhằm mục tiêu gì?', 
-    ['Tránh lạm quyền và bảo vệ quyền lợi hợp pháp', 'Làm chậm mọi quyết định', 'Tăng thủ tục vô nghĩa', 'Bỏ giám sát'], 
+    'Việc kiểm soát quyền lực nhằm mục tiêu gì?',
+    ['Tránh lạm quyền và bảo vệ quyền lợi hợp pháp', 'Làm chậm mọi quyết định', 'Tăng thủ tục vô nghĩa', 'Bỏ giám sát'],
     'Tránh lạm quyền và bảo vệ quyền lợi hợp pháp',
     'Giải thích: Kiểm soát quyền lực nhà nước nhằm bảo đảm quyền lực được tuân thủ Hiến pháp và pháp luật, ngăn ngừa hiện tượng lạm quyền, tha hóa quyền lực, tham nhũng, từ đó bảo vệ tối đa lợi ích hợp pháp của Nhân dân.'
   ],
   [
-    'Cấp chính quyền địa phương cập nhật đến 7/2026 nên trình bày theo mô hình nào?', 
-    ['Cấp tỉnh và cấp xã', 'Tỉnh, huyện, xã như cũ', 'Chỉ có trung ương', 'Chỉ có cấp huyện'], 
+    'Cấp chính quyền địa phương cập nhật đến 7/2026 nên trình bày theo mô hình nào?',
+    ['Cấp tỉnh và cấp xã', 'Tỉnh, huyện, xã như cũ', 'Chỉ có trung ương', 'Chỉ có cấp huyện'],
     'Cấp tỉnh và cấp xã',
     'Giải thích: Theo định hướng tinh gọn bộ máy, hiện đại hóa nền hành chính và lộ trình cải cách thể chế đến năm 2026, mô hình chính quyền địa phương được tinh gọn theo hướng tối ưu hóa (giảm nấc trung gian, tập trung vào cấp tỉnh hoạch định và cấp xã trực tiếp thực thi phục vụ dân).'
   ],
   [
-    'Đại biểu Quốc hội có vai trò nào?', 
-    ['Đại diện ý chí, nguyện vọng của Nhân dân', 'Xét xử bị cáo', 'Cấp giấy phép lái xe', 'Kiểm sát điều tra'], 
+    'Đại biểu Quốc hội có vai trò nào?',
+    ['Đại diện ý chí, nguyện vọng của Nhân dân', 'Xét xử bị cáo', 'Cấp giấy phép lái xe', 'Kiểm sát điều tra'],
     'Đại diện ý chí, nguyện vọng của Nhân dân',
     'Giải thích: Theo Điều 79 Hiến pháp 2013, Đại biểu Quốc hội là người đại diện cho ý chí, nguyện vọng của Nhân dân ở đơn vị bầu cử ra mình và của Nhân dân cả nước; chịu trách nhiệm trước cử tri và trước Quốc hội.'
   ],
   [
-    'Cổng ý kiến Nhân dân trong web mô phỏng nghiệp vụ nào?', 
-    ['Tiếp nhận, phân loại, xử lý, giải trình', 'Chơi game giải trí thuần túy', 'Bán hàng', 'Quảng cáo'], 
+    'Cổng ý kiến Nhân dân trong web mô phỏng nghiệp vụ nào?',
+    ['Tiếp nhận, phân loại, xử lý, giải trình', 'Chơi game giải trí thuần túy', 'Bán hàng', 'Quảng cáo'],
     'Tiếp nhận, phân loại, xử lý, giải trình',
     'Giải thích: Trong Website Mockup của dự án, "Cổng tiếp nhận ý kiến Nhân dân" mô phỏng 4 bước chuẩn của nền quản trị dân chủ: Tiếp nhận phản hồi -> Phân loại ý kiến -> Xử lý theo thẩm quyền -> Giải trình công khai trước Nhân dân.'
   ],
+
   [
-    'AI trong bài này được dùng như thế nào?', 
-    ['Công cụ tham khảo, nhóm vẫn quyết định nội dung', 'Thay nhóm làm toàn bộ', 'Nguồn pháp luật chính thức', 'Công cụ chấm điểm môn học'], 
-    'Công cụ tham khảo, nhóm vẫn quyết định nội dung',
-    'Giải thích: AI được nhóm sử dụng như công cụ hỗ trợ lên ý tưởng, viết code mockup và tra cứu nhanh; trong khi toàn bộ tính chính xác của kiến thức pháp lý, lập luận học thuật và quyết định cuối cùng hoàn toàn do nhóm sinh viên làm chủ và chịu trách nhiệm.'
-  ],
-  [
-    '“Nhà nước của Nhân dân, do Nhân dân, vì Nhân dân” nhấn mạnh điều gì?', 
-    ['Bản chất phục vụ Nhân dân', 'Quyền lực tách khỏi Nhân dân', 'Không cần bầu cử', 'Không cần pháp luật'], 
+    '“Nhà nước của Nhân dân, do Nhân dân, vì Nhân dân” nhấn mạnh điều gì?',
+    ['Bản chất phục vụ Nhân dân', 'Quyền lực tách khỏi Nhân dân', 'Không cần bầu cử', 'Không cần pháp luật'],
     'Bản chất phục vụ Nhân dân',
     'Giải thích: Đây là nguyên tắc khẳng định bản chất ưu việt của nền dân chủ XHCN: mọi quyền lực nhà nước thuộc về Nhân dân, do Nhân dân lập ra, giám sát và hoạt động vì mục tiêu duy nhất là đem lại tự do, ấm no, hạnh phúc cho Nhân dân.'
   ],
   [
-    'Khi một chính sách được ban hành, nhóm hành pháp làm gì?', 
-    ['Tổ chức thi hành', 'Tuyên án', 'Sửa Hiến pháp một mình', 'Thay đại biểu biểu quyết'], 
+    'Khi một chính sách được ban hành, nhóm hành pháp làm gì?',
+    ['Tổ chức thi hành', 'Tuyên án', 'Sửa Hiến pháp một mình', 'Thay đại biểu biểu quyết'],
     'Tổ chức thi hành',
     'Giải thích: Chức năng cốt lõi của nhánh hành pháp (Chính phủ, các Bộ, UBND các cấp) là tổ chức triển khai, thi hành luật và chính sách vào đời sống thực tiễn thông qua hệ thống văn bản hướng dẫn và công cụ hành chính.'
   ],
   [
-    'Hội đồng Dân tộc và các Ủy ban của Quốc hội thường làm gì?', 
-    ['Thẩm tra và giám sát chuyên đề', 'Xét xử sơ thẩm', 'Cấp căn cước công dân', 'Điều tra hình sự'], 
+    'Hội đồng Dân tộc và các Ủy ban của Quốc hội thường làm gì?',
+    ['Thẩm tra và giám sát chuyên đề', 'Xét xử sơ thẩm', 'Cấp căn cước công dân', 'Điều tra hình sự'],
     'Thẩm tra và giám sát chuyên đề',
     'Giải thích: Các Ủy ban của Quốc hội và Hội đồng Dân tộc có cơ cấu chuyên môn sâu, thực hiện vai trò thẩm tra các dự án luật, báo cáo trước khi trình Quốc hội, đồng thời trực tiếp tiến hành các đoàn giám sát chuyên đề.'
   ],
   [
-    'Tòa án nhân dân khu vực thuộc hệ thống nào?', 
-    ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Mặt trận Tổ quốc'], 
+    'Tòa án nhân dân khu vực thuộc hệ thống nào?',
+    ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Mặt trận Tổ quốc'],
     'Tòa án nhân dân',
     'Giải thích: Tòa án nhân dân khu vực (hoặc cấp huyện/thành phố trực thuộc) là đơn vị cơ sở thuộc hệ thống Tòa án nhân dân, thực hiện thẩm quyền xét xử sơ thẩm theo quy định của pháp luật.'
   ],
   [
-    'Khi người dân khiếu nại quyền lợi bị xâm phạm, cơ quan xét xử độc lập là?', 
-    ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Bộ Tài chính'], 
+    'Khi người dân khiếu nại quyền lợi bị xâm phạm, cơ quan xét xử độc lập là?',
+    ['Tòa án nhân dân', 'Chính phủ', 'Quốc hội', 'Bộ Tài chính'],
     'Tòa án nhân dân',
     'Giải thích: Tòa án là thiết chế tài phán độc lập thuộc nhánh tư pháp, nơi người dân có quyền khởi kiện các vụ án dân sự, tranh chấp kinh tế hoặc khiếu kiện hành chính để bảo vệ quyền và lợi ích hợp pháp của mình.'
   ],
   [
-    'Cơ quan nào công bố lệnh, quyết định theo thẩm quyền trong một số trường hợp sau quyết định của Quốc hội?', 
-    ['Chủ tịch nước', 'TAND khu vực', 'UBND xã', 'Ủy ban MTTQ'], 
+    'Cơ quan nào công bố lệnh, quyết định theo thẩm quyền trong một số trường hợp sau quyết định của Quốc hội?',
+    ['Chủ tịch nước', 'TAND khu vực', 'UBND xã', 'Ủy ban MTTQ'],
     'Chủ tịch nước',
     'Giải thích: Theo Điều 88 Hiến pháp 2013, Chủ tịch nước với vai trò Nguyên thủ quốc gia có thẩm quyền công bố Hiến pháp, luật, pháp lệnh; ban hành lệnh, quyết định để thực hiện các nhiệm vụ được Hiến pháp định đoạt sau khi Quốc hội thông qua.'
   ],
+
   [
-    'Trong bài học, không nên trình bày Việt Nam theo mô hình nào?', 
-    ['Tam quyền phân lập tuyệt đối', 'Quyền lực thống nhất', 'Có kiểm soát quyền lực', 'Có phân công phối hợp'], 
-    'Tam quyền phân lập tuyệt đối',
-    'Giải thích: Nhà nước pháp quyền XHCN Việt Nam vận hành theo nguyên tắc "Quyền lực nhà nước là thống nhất, có sự phân công, phối hợp, kiểm soát", kiên quyết từ chối mô hình "Tam quyền phân lập tuyệt đối" (đối lập, triệt tiêu quyền lực lẫn nhau như ở tư bản).'
-  ],
-  [
-    'Cải cách tư pháp gắn với yêu cầu nào?', 
-    ['Bảo vệ công lý và quyền con người', 'Bỏ xét xử', 'Giảm minh bạch', 'Tăng tùy tiện'], 
+    'Cải cách tư pháp gắn với yêu cầu nào?',
+    ['Bảo vệ công lý và quyền con người', 'Bỏ xét xử', 'Giảm minh bạch', 'Tăng tùy tiện'],
     'Bảo vệ công lý và quyền con người',
     'Giải thích: Nghị quyết 27-NQ/TW và Chiến lược cải cách tư pháp đặt trọng tâm xây dựng nền tư pháp chuyên nghiệp, công bằng, nghiêm minh, liêm chính, lấy bảo vệ công lý, bảo vệ quyền con người và quyền công dân làm mục tiêu cao nhất.'
   ],
   [
-    'Chính quyền địa phương thực hiện nhiệm vụ theo nguyên tắc nào?', 
-    ['Theo Hiến pháp, luật và phân quyền, phân cấp', 'Tự ý trái luật', 'Không cần trách nhiệm', 'Chỉ theo bình chọn'], 
+    'Chính quyền địa phương thực hiện nhiệm vụ theo nguyên tắc nào?',
+    ['Theo Hiến pháp, luật và phân quyền, phân cấp', 'Tự ý trái luật', 'Không cần trách nhiệm', 'Chỉ theo bình chọn'],
     'Theo Hiến pháp, luật và phân quyền, phân cấp',
     'Giải thích: Theo Điều 112 Hiến pháp 2013, nhiệm vụ, quyền hạn của chính quyền địa phương được xác định trên cơ sở phân định thẩm quyền giữa các cơ quan nhà nước ở trung ương và địa phương theo nguyên tắc phân quyền, phân cấp và bảo đảm tính thống nhất của Hiến pháp, pháp luật.'
   ],
   [
-    'Một dự thảo chính sách cần lấy ý kiến để làm gì?', 
-    ['Tăng dân chủ, hoàn thiện chính sách', 'Làm trang trí', 'Thay thế toàn bộ quy trình lập pháp', 'Bỏ qua chuyên môn'], 
+    'Một dự thảo chính sách cần lấy ý kiến để làm gì?',
+    ['Tăng dân chủ, hoàn thiện chính sách', 'Làm trang trí', 'Thay thế toàn bộ quy trình lập pháp', 'Bỏ qua chuyên môn'],
     'Tăng dân chủ, hoàn thiện chính sách',
     'Giải thích: Việc lấy ý kiến Nhân dân đối với dự thảo pháp luật/chính sách nhằm thực hành quyền dân chủ rộng rãi, huy động trí tuệ tập thể và phản biện xã hội, bảo đảm tính khả thi và hoàn thiện chính sách trước khi ban hành.'
   ],
+
   [
-    'Bảng thống kê lỗi sai trong game giúp gì?', 
-    ['Nhận diện phần kiến thức lớp hay nhầm', 'Chọn người thắng theo cảm tính', 'Ẩn lỗi sai', 'Xóa điểm đúng'], 
-    'Nhận diện phần kiến thức lớp hay nhầm',
-    'Giải thích: Bảng thống kê lỗi sai (Error Analytics Dashboard) trong Website Mockup giúp giảng viên và nhóm thuyết trình ngay lập tức nhận diện được những lỗ hổng kiến thức hoặc khái niệm mà nhiều bạn sinh viên còn nhầm lẫn để giải thích sâu hơn.'
-  ],
-  [
-    'Leaderboard xếp hạng theo tiêu chí nào?', 
-    ['Điểm cao hơn, nếu bằng điểm thì thời gian ngắn hơn', 'Tên dài hơn', 'Vào chơi trước luôn thắng', 'Chọn ngẫu nhiên'], 
-    'Điểm cao hơn, nếu bằng điểm thì thời gian ngắn hơn',
-    'Giải thích: Để đảm bảo tính cạnh tranh và công bằng trong Minigame, Bảng xếp hạng (Leaderboard) lập trình tiêu chí ưu tiên theo tổng điểm số (Score); trường hợp hai người bằng điểm thì người hoàn thành với tổng thời gian ngắn hơn (Time) sẽ xếp trên.'
-  ],
-  [
-    'Cơ chế kiểm soát quyền lực gồm nội dung nào?', 
-    ['Phân công, phối hợp, giám sát, kiểm tra, xét xử, kiểm sát', 'Không ai kiểm tra ai', 'Chỉ có một cơ quan tự quyết mọi việc', 'Bỏ trách nhiệm giải trình'], 
+    'Cơ chế kiểm soát quyền lực gồm nội dung nào?',
+    ['Phân công, phối hợp, giám sát, kiểm tra, xét xử, kiểm sát', 'Không ai kiểm tra ai', 'Chỉ có một cơ quan tự quyết mọi việc', 'Bỏ trách nhiệm giải trình'],
     'Phân công, phối hợp, giám sát, kiểm tra, xét xử, kiểm sát',
     'Giải thích: Cơ chế kiểm soát quyền lực nhà nước ở Việt Nam là sự kết hợp đồng bộ của: Quốc hội/HĐND giám sát; Chính phủ thanh tra, kiểm tra; Viện kiểm sát thực hành công tố, kiểm sát; Tòa án xét xử độc lập; và sự giám sát phản biện từ Mặt trận Tổ quốc cùng Nhân dân.'
   ],
   [
-    'Bộ, cơ quan ngang bộ thuộc nhánh nào?', 
-    ['Hành pháp', 'Tư pháp', 'Lập pháp', 'Cử tri'], 
+    'Bộ, cơ quan ngang bộ thuộc nhánh nào?',
+    ['Hành pháp', 'Tư pháp', 'Lập pháp', 'Cử tri'],
     'Hành pháp',
     'Giải thích: Các Bộ và cơ quan ngang Bộ là cơ quan chuyên môn thuộc Chính phủ, thực hiện chức năng quản lý nhà nước về một hoặc một số ngành, lĩnh vực (kinh tế, y tế, giáo dục, quốc phòng...) thuộc nhánh hành pháp.'
   ],
   [
-    'Một phiên chất vấn Quốc hội thể hiện chức năng gì?', 
-    ['Giám sát và yêu cầu giải trình', 'Xét xử hình sự', 'Cấp căn cước', 'Công tố'], 
+    'Một phiên chất vấn Quốc hội thể hiện chức năng gì?',
+    ['Giám sát và yêu cầu giải trình', 'Xét xử hình sự', 'Cấp căn cước', 'Công tố'],
     'Giám sát và yêu cầu giải trình',
     'Giải thích: Hoạt động chất vấn tại kỳ họp Quốc hội là hình thức giám sát tối cao mạnh mẽ và trực tiếp nhất, yêu cầu các thành viên Chính phủ, Trưởng ngành phải trực tiếp giải trình công khai, minh bạch về các vấn đề nóng thuộc trách nhiệm quản lý.'
   ],
   [
-    'Viện kiểm sát khác Tòa án ở điểm nào?', 
-    ['Kiểm sát và công tố, không phải cơ quan xét xử', 'Làm luật', 'Quyết định chiến tranh', 'Quản lý dịch vụ công'], 
+    'Viện kiểm sát khác Tòa án ở điểm nào?',
+    ['Kiểm sát và công tố, không phải cơ quan xét xử', 'Làm luật', 'Quyết định chiến tranh', 'Quản lý dịch vụ công'],
     'Kiểm sát và công tố, không phải cơ quan xét xử',
     'Giải thích: Trong nhánh tư pháp, Viện kiểm sát có chức năng chuyên biệt là thực hành quyền công tố (buộc tội trước tòa) và kiểm sát hoạt động tư pháp; trong khi Tòa án mới là thiết chế tài phán có quyền quyết định xét xử (ra bản án, quyết định).'
   ],
   [
-    'Thượng tôn Hiến pháp và pháp luật nghĩa là gì?', 
-    ['Mọi chủ thể hoạt động trong khuôn khổ pháp luật', 'Luật chỉ để tham khảo', 'Cơ quan nào cũng tùy ý', 'Không cần văn bản'], 
+    'Thượng tôn Hiến pháp và pháp luật nghĩa là gì?',
+    ['Mọi chủ thể hoạt động trong khuôn khổ pháp luật', 'Luật chỉ để tham khảo', 'Cơ quan nào cũng tùy ý', 'Không cần văn bản'],
     'Mọi chủ thể hoạt động trong khuôn khổ pháp luật',
     'Giải thích: Nguyên tắc "Thượng tôn Hiến pháp và pháp luật" đòi hỏi Hiến pháp và pháp luật phải giữ vị trí tối cao; mọi cơ quan nhà nước, tổ chức kinh tế, xã hội, cán bộ, đảng viên và công dân đều bình đẳng trước pháp luật và phải tuân thủ nghiêm ngặt pháp luật.'
   ],
   [
-    'Nhân dân giám sát Nhà nước thông qua kênh nào?', 
-    ['Góp ý, tiếp xúc cử tri, phản biện, khiếu nại, tố cáo theo luật', 'Chỉ bình luận ẩn danh', 'Tự tuyên án', 'Tự ban hành nghị định'], 
+    'Nhân dân giám sát Nhà nước thông qua kênh nào?',
+    ['Góp ý, tiếp xúc cử tri, phản biện, khiếu nại, tố cáo theo luật', 'Chỉ bình luận ẩn danh', 'Tự tuyên án', 'Tự ban hành nghị định'],
     'Góp ý, tiếp xúc cử tri, phản biện, khiếu nại, tố cáo theo luật',
     'Giải thích: Người dân thực hiện quyền giám sát thông qua cơ chế dân chủ trực tiếp và gián tiếp: tiếp xúc cử tri, gửi ý kiến phản ánh, tham gia phản biện xã hội qua Mặt trận Tổ quốc, hoặc thực hiện quyền khiếu nại, tố cáo các hành vi vi phạm pháp luật.'
   ],
   [
-    'Mục tiêu của Nhà nước pháp quyền XHCN Việt Nam là?', 
-    ['Phục vụ Nhân dân, bảo vệ quyền và lợi ích hợp pháp', 'Tách khỏi Nhân dân', 'Không cần kiểm soát quyền lực', 'Bỏ pháp luật'], 
+    'Mục tiêu của Nhà nước pháp quyền XHCN Việt Nam là?',
+    ['Phục vụ Nhân dân, bảo vệ quyền và lợi ích hợp pháp', 'Tách khỏi Nhân dân', 'Không cần kiểm soát quyền lực', 'Bỏ pháp luật'],
     'Phục vụ Nhân dân, bảo vệ quyền và lợi ích hợp pháp',
     'Giải thích: Mục tiêu tối cao của xây dựng Nhà nước pháp quyền XHCN là tạo dựng một bộ máy trong sạch, vững mạnh, hiệu lực, hiệu quả, lấy việc phục vụ Nhân dân làm trung tâm, bảo vệ quyền con người, quyền công dân và các lợi ích hợp pháp trong xã hội.'
   ],
   [
-    'Câu nào đúng về Đảng và Nhà nước?', 
-    ['Đảng lãnh đạo, Nhà nước thể chế hóa và tổ chức thực hiện', 'Đảng xét xử thay Tòa án', 'Nhà nước không cần pháp luật', 'Quốc hội không có vai trò lập pháp'], 
+    'Câu nào đúng về Đảng và Nhà nước?',
+    ['Đảng lãnh đạo, Nhà nước thể chế hóa và tổ chức thực hiện', 'Đảng xét xử thay Tòa án', 'Nhà nước không cần pháp luật', 'Quốc hội không có vai trò lập pháp'],
     'Đảng lãnh đạo, Nhà nước thể chế hóa và tổ chức thực hiện',
     'Giải thích: Theo cơ chế vận hành của hệ thống chính trị Việt Nam ("Đảng lãnh đạo, Nhà nước quản lý, Nhân dân làm chủ"), Đảng đề ra đường lối, định hướng chiến lược; Nhà nước thể chế hóa đường lối đó thành Hiến pháp, pháp luật để quản lý xã hội.'
   ],
   [
-    'Câu nào đúng về TAND tối cao?', 
-    ['Là cơ quan xét xử cao nhất', 'Là cơ quan hành chính cao nhất', 'Là cơ quan đại biểu cao nhất', 'Là tổ chức xã hội nghề nghiệp'], 
+    'Câu nào đúng về TAND tối cao?',
+    ['Là cơ quan xét xử cao nhất', 'Là cơ quan hành chính cao nhất', 'Là cơ quan đại biểu cao nhất', 'Là tổ chức xã hội nghề nghiệp'],
     'Là cơ quan xét xử cao nhất',
     'Giải thích: Theo Điều 104 Hiến pháp 2013, Tòa án nhân dân tối cao là cơ quan xét xử cao nhất của nước Cộng hòa xã hội chủ nghĩa Việt Nam, có nhiệm vụ giám đốc thẩm, tái thẩm bản án của các tòa án khác và tổng kết thực tiễn xét xử.'
   ],
-  [
-    'Trong game, mỗi câu đúng được bao nhiêu điểm?', 
-    ['1 điểm', '10 điểm', '100 điểm', 'Tùy người chơi'], 
-    '1 điểm',
-    'Giải thích: Trong quy tắc lập trình Minigame của Website Mockup, mỗi câu trả lời đúng được tính quy chuẩn là 1 điểm để dễ dàng thống kê, tính toán tỷ lệ chính xác và hiển thị trực quan trên Bảng thống kê lỗi sai cũng như Leaderboard.'
-  ],
-  [
-    'Vì sao hệ thống trộn câu hỏi cho từng lượt chơi?', 
-    ['Giảm học tủ, tăng công bằng khi nhiều người tham gia', 'Làm cho thiếu dữ liệu', 'Để ẩn đáp án đúng', 'Để bỏ thống kê'], 
-    'Giảm học tủ, tăng công bằng khi nhiều người tham gia',
-    'Giải thích: Trong thiết kế hệ thống tương tác học thuật, thuật toán trộn ngẫu nhiên câu hỏi và đáp án (Randomize) giúp ngăn chặn tình trạng ghi nhớ vị trí đáp án (học tủ), bảo đảm tính cạnh tranh công bằng tuyệt đối cho tất cả sinh viên khi chơi đồng thời.'
-  ]
+
 ];
 
 function encodePostgrestIds(ids) {
@@ -957,7 +925,7 @@ function QuizHost() {
   const sorted = [...players].sort((a, b) => b.score - a.score || a.duration - b.duration);
   const wrongMap = {};
   const wrongDetailsMap = {};
-  
+
   players.forEach((p) => {
     if (!p.wrong) return;
     p.wrong.forEach((item) => {
@@ -970,7 +938,7 @@ function QuizHost() {
         chosenOption = item.option;
       }
       if (!qId) return;
-      
+
       wrongMap[qId] = (wrongMap[qId] || 0) + 1;
       if (chosenOption) {
         if (!wrongDetailsMap[qId]) {
