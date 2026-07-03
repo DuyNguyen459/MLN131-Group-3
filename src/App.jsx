@@ -544,7 +544,14 @@ function useRemoteList(table) {
 }
 
 function shufflePick(seedSource, count) {
-  const list = questions.map((q, index) => ({ id: `q${index + 1}`, text: q[0], options: q[1], answer: q[2] }));
+  const list = questions.map((q, index) => {
+    const options = [...q[1]];
+    for (let k = options.length - 1; k > 0; k--) {
+      const r = Math.floor(Math.random() * (k + 1));
+      [options[k], options[r]] = [options[r], options[k]];
+    }
+    return { id: `q${index + 1}`, text: q[0], options, answer: q[2] };
+  });
   let seed = seedSource.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) || Date.now();
   for (let i = list.length - 1; i > 0; i -= 1) {
     seed = (seed * 9301 + 49297) % 233280;
@@ -1112,7 +1119,7 @@ function GameApp() {
             <span className="result good">Hoàn thành</span>
             <h1>{name}: {answers.filter((a) => a.correct).length}/20 điểm</h1>
             <p>Điểm đã được ghi vào bảng xếp hạng của trang chính.</p>
-            <button className="primary-btn" onClick={() => { setPaper([]); setName(''); }}>Chơi lượt khác</button>
+            <button className="primary-btn" onClick={() => { setPaper([]); setName(''); setDone(false); setAnswers([]); }}>Chơi lượt khác</button>
           </>
         )}
       </section>
