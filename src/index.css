@@ -1724,7 +1724,7 @@ p {
   color: var(--red);
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1180px) {
   .hero-content {
     grid-template-columns: 1fr;
   }
@@ -1813,7 +1813,7 @@ p {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .topbar {
     top: 10px;
     width: calc(100vw - 20px);
@@ -1837,15 +1837,26 @@ p {
   .radial-hub {
     width: min(100%, 420px);
     margin-top: 18px;
+    display: grid;
+    gap: 8px;
+    aspect-ratio: auto;
+    padding-top: 230px;
   }
 
   .hub-lines {
-    opacity: 0.5;
+    display: none !important;
   }
 
   .drum-core {
     width: 210px;
     height: 210px;
+    top: 112px;
+  }
+
+  .real-drum-photo {
+    top: 112px !important;
+    width: 196px !important;
+    height: 196px !important;
   }
 
   .hub-node {
@@ -1858,20 +1869,12 @@ p {
     transform: none !important;
   }
 
-  .radial-hub {
-    display: grid;
-    gap: 8px;
-    aspect-ratio: auto;
-    padding-top: 230px;
-  }
-
-  .drum-core,
-  .hub-lines {
-    top: 112px;
-  }
-
   .hub-node small {
     display: none;
+  }
+
+  .accordion-body {
+    padding-left: 20px !important;
   }
 
   .branch-tabs,
@@ -1884,6 +1887,112 @@ p {
   .primary-btn,
   .ghost-btn {
     width: 100%;
+  }
+
+  .branch-visual {
+    min-height: auto !important;
+    padding: 20px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .branch-visual h3 {
+    margin: 8px 0 2px !important;
+    font-size: 1.6rem !important;
+  }
+
+  .branch-visual p {
+    margin: 8px 0 0 !important;
+    font-size: 0.95rem !important;
+  }
+
+  .org-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .org-list button {
+    padding: 10px 12px !important;
+    min-height: 52px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .org-list button span {
+    display: none !important;
+  }
+
+  .workflow-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-rail div {
+    min-height: auto !important;
+    padding: 12px !important;
+  }
+
+  .workflow-rail span {
+    margin-bottom: 8px !important;
+  }
+
+  .transparency-table {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .table-row.head {
+    display: none !important;
+  }
+
+  .table-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 16px !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    margin-bottom: 12px !important;
+    background: var(--glass-fill-strong) !important;
+    backdrop-filter: blur(18px) saturate(1.14) !important;
+  }
+
+  .table-row span {
+    display: block !important;
+    line-height: 1.5 !important;
+  }
+
+  .table-row span:nth-child(1) {
+    font-weight: 900 !important;
+    color: var(--red) !important;
+    font-size: 1.05rem !important;
+    border-bottom: 1px solid rgba(31, 41, 55, 0.08) !important;
+    padding-bottom: 6px !important;
+  }
+
+  .table-row span:nth-child(2)::before {
+    content: "AI hỗ trợ: " !important;
+    font-weight: 800 !important;
+    color: var(--cyan) !important;
+  }
+
+  .table-row span:nth-child(3)::before {
+    content: "Nhóm thực hiện: " !important;
+    font-weight: 800 !important;
+    color: #9d6e0c !important;
+  }
+
+  .game-page {
+    padding: 16px !important;
+    gap: 16px !important;
+  }
+
+  .game-card {
+    min-height: auto !important;
+    padding: 20px !important;
   }
 
   .quiz-screen.split,
@@ -1940,5 +2049,22 @@ p {
   background: rgba(255, 255, 255, 0.98) !important;
   border-color: rgba(193, 18, 31, 0.3) !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Scaling helpers & Tooltip constraints */
+.drum-core svg {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+.qr-host svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.custom-tooltip {
+  max-width: calc(100vw - 40px) !important;
 }
 
