@@ -1904,3 +1904,41 @@ p {
     gap: 8px;
   }
 }
+
+/* Custom CSS to improve contrast and readability for glass cards in the dark quiz section */
+.dark-band .glass-card {
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: var(--ink) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dark-band .glass-card h3 {
+  color: var(--ink) !important;
+}
+
+.dark-band .glass-card p {
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+.dark-band .rank-row {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(31, 41, 55, 0.15) !important;
+}
+
+.dark-band .rank-row strong {
+  color: var(--ink) !important;
+}
+
+.dark-band .rank-row span {
+  color: #475569 !important;
+}
+
+/* Tooltip custom container styles */
+.custom-tooltip.glass-card {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(193, 18, 31, 0.3) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+}
+

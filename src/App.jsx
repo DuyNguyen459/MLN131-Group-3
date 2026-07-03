@@ -304,6 +304,18 @@ function shufflePick(seedSource, count) {
   return list.slice(0, count);
 }
 
+function getQuestionById(id) {
+  const index = parseInt(id.replace(/^q/i, ''), 10) - 1;
+  const q = questions[index];
+  if (!q) return null;
+  return {
+    id,
+    text: q[0],
+    options: q[1],
+    answer: q[2]
+  };
+}
+
 function scrollToId(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -641,13 +653,83 @@ function FeedbackPortal() {
   );
 }
 
+function CustomTooltip({ active, payload }) {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    const wrongOptionsList = Object.entries(data.wrongOptions || {})
+      .sort((a, b) => b[1] - a[1]);
+    return (
+      <div className="custom-tooltip glass-card" style={{ padding: '14px', maxWidth: '320px', color: '#1f2937' }}>
+        <p style={{ margin: 0, fontWeight: 900, color: '#c1121f', fontSize: '0.85rem' }}>{data.name}</p>
+        <p style={{ margin: '4px 0 8px 0', fontWeight: 800, fontSize: '0.92rem', lineHeight: '1.4', color: '#1f2937' }}>{data.questionText}</p>
+        <p style={{ margin: '0 0 6px 0', fontSize: '0.85rem', color: '#057a55', fontWeight: 750 }}>
+          ✓ Đáp án đúng: <span style={{ fontWeight: 850 }}>{data.correctAnswer}</span>
+        </p>
+        {wrongOptionsList.length > 0 ? (
+          <div style={{ fontSize: '0.85rem', color: '#c1121f' }}>
+            <span style={{ fontWeight: 750 }}>✗ Đáp án sai đã chọn:</span>
+            <ul style={{ margin: '4px 0 0 0', paddingLeft: '16px', listStyleType: 'disc', fontWeight: 800 }}>
+              {wrongOptionsList.map(([opt, count], index) => (
+                <li key={opt} style={{ margin: '2px 0' }}>
+                  {opt} <span style={{ fontWeight: 500, color: '#64748b' }}>({count} lượt)</span>
+                  {index === 0 && <span style={{ color: '#da251d', fontWeight: 900, marginLeft: '6px' }}>(Chọn nhiều nhất)</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p style={{ margin: 0, fontSize: '0.82rem', color: '#64748b', fontStyle: 'italic' }}>
+            (Chưa có chi tiết đáp án sai đã chọn)
+          </p>
+        )}
+      </div>
+    );
+  }
+  return null;
+}
+
 function QuizHost() {
   const [players, setPlayers, dbStatus] = useRemoteList('hpq_players');
   const gameUrl = `${window.location.origin}${window.location.pathname}?game=1`;
   const sorted = [...players].sort((a, b) => b.score - a.score || a.duration - b.duration);
-  const wrongMap = players.flatMap((p) => p.wrong || []).reduce((acc, id) => ({ ...acc, [id]: (acc[id] || 0) + 1 }), {});
+  const wrongMap = {};
+  const wrongDetailsMap = {};
+  
+  players.forEach((p) => {
+    if (!p.wrong) return;
+    p.wrong.forEach((item) => {
+      let qId = "";
+      let chosenOption = null;
+      if (typeof item === 'string') {
+        qId = item;
+      } else if (item && typeof item === 'object') {
+        qId = item.id;
+        chosenOption = item.option;
+      }
+      if (!qId) return;
+      
+      wrongMap[qId] = (wrongMap[qId] || 0) + 1;
+      if (chosenOption) {
+        if (!wrongDetailsMap[qId]) {
+          wrongDetailsMap[qId] = {};
+        }
+        wrongDetailsMap[qId][chosenOption] = (wrongDetailsMap[qId][chosenOption] || 0) + 1;
+      }
+    });
+  });
+
   const chart = Object.entries(wrongMap)
-    .map(([id, value]) => ({ id, name: id.toUpperCase(), value }))
+    .map(([id, value]) => {
+      const qInfo = getQuestionById(id);
+      return {
+        id,
+        name: id.toUpperCase(),
+        value,
+        questionText: qInfo ? qInfo.text : '',
+        correctAnswer: qInfo ? qInfo.answer : '',
+        wrongOptions: wrongDetailsMap[id] || {}
+      };
+    })
     .sort((a, b) => b.value - a.value)
     .slice(0, 8);
   return (
@@ -680,9 +762,9 @@ function QuizHost() {
           {chart.length === 0 ? <p>Chưa có dữ liệu sai. Thống kê sẽ xuất hiện sau khi có người chơi.</p> : (
             <ResponsiveContainer width="100%" height={260}>
               <BarChart data={chart}>
-                <XAxis dataKey="name" stroke="#64748b" />
-                <YAxis stroke="#64748b" allowDecimals={false} />
-                <Tooltip />
+                <XAxis dataKey="name" stroke="#334155" />
+                <YAxis stroke="#334155" allowDecimals={false} />
+                <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="value" radius={[8, 8, 0, 0]}>{chart.map((entry, index) => <Cell key={entry.id} fill={index === 0 ? '#c1121f' : '#d4a017'} />)}</Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -729,7 +811,7 @@ function GameApp() {
     if (index === 19) {
       const duration = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
       const score = nextAnswers.filter((a) => a.correct).length;
-      setPlayers((prev) => [...prev, { id: crypto.randomUUID(), name, score, duration, wrong: nextAnswers.filter((a) => !a.correct).map((a) => a.id), at: new Date().toISOString() }]);
+      setPlayers((prev) => [...prev, { id: crypto.randomUUID(), name, score, duration, wrong: nextAnswers.filter((a) => !a.correct).map((a) => ({ id: a.id, option: a.option })), at: new Date().toISOString() }]);
       setDone(true);
     } else {
       setIndex((i) => i + 1);
