@@ -11,6 +11,10 @@
   --cyan: #00a6c8;
   --line: rgba(31, 41, 55, 0.12);
   --glass: rgba(255, 255, 255, 0.74);
+  --glass-border: rgba(255, 255, 255, 0.52);
+  --glass-fill: linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.16)), rgba(255, 255, 255, 0.18);
+  --glass-fill-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.28)), rgba(255, 255, 255, 0.24);
+  --glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58), 0 18px 48px rgba(31, 41, 55, 0.1);
   --shadow: 0 22px 70px rgba(31, 41, 55, 0.13);
   font-family: "Be Vietnam Pro", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -666,11 +670,11 @@ p {
 }
 
 .glass-card {
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--glass-border);
   border-radius: 22px;
-  background: var(--glass);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(22px);
+  background: var(--glass-fill);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(24px) saturate(1.18);
 }
 
 .party-panel {
@@ -779,10 +783,12 @@ p {
   gap: 8px;
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 14px;
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--glass-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44);
+  backdrop-filter: blur(16px) saturate(1.14);
   cursor: pointer;
   font-weight: 850;
 }
@@ -796,7 +802,9 @@ p {
 .branch-tabs button.active {
   border-color: color-mix(in srgb, var(--accent), transparent 55%);
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent), transparent 88%);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.58), color-mix(in srgb, var(--accent), transparent 86%)),
+    color-mix(in srgb, var(--accent), transparent 90%);
   box-shadow: 0 12px 28px color-mix(in srgb, var(--accent), transparent 84%);
 }
 
@@ -811,18 +819,20 @@ p {
 .branch-mode button {
   min-height: 38px;
   padding: 0 14px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--glass-fill);
   color: var(--muted);
   cursor: pointer;
   font-weight: 850;
 }
 
 .branch-mode button.active {
-  background: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(31, 41, 55, 0.86), rgba(31, 41, 55, 0.52)),
+    rgba(255, 255, 255, 0.16);
   color: #fff8df;
-  box-shadow: 0 14px 30px rgba(31, 41, 55, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 14px 30px rgba(31, 41, 55, 0.16);
 }
 
 .branch-showcase {
@@ -884,12 +894,14 @@ p {
   gap: 6px;
   width: 100%;
   padding: 16px 18px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--glass-fill);
   color: var(--ink);
   text-align: left;
   cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(16px) saturate(1.14);
 }
 
 .org-list button:hover {
@@ -901,8 +913,9 @@ p {
 .org-list button.active {
   border-color: color-mix(in srgb, var(--accent), transparent 48%);
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--accent), white 88%), rgba(255, 255, 255, 0.88));
-  box-shadow: inset 4px 0 0 var(--accent), 0 18px 36px color-mix(in srgb, var(--accent), transparent 88%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), color-mix(in srgb, var(--accent), white 82%)),
+    color-mix(in srgb, var(--accent), transparent 88%);
+  box-shadow: inset 4px 0 0 var(--accent), inset 0 1px 0 rgba(255, 255, 255, 0.62), 0 18px 36px color-mix(in srgb, var(--accent), transparent 88%);
 }
 
 .org-list button.active strong {
@@ -919,12 +932,13 @@ p {
 .org-detail-card {
   min-height: 100%;
   padding: 22px;
-  border: 1px solid color-mix(in srgb, var(--accent), transparent 74%);
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 68%);
   border-radius: 20px;
   background:
-    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--accent), transparent 82%), transparent 12rem),
-    rgba(255, 255, 255, 0.86);
-  box-shadow: 0 20px 50px rgba(31, 41, 55, 0.09);
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--accent), transparent 80%), transparent 12rem),
+    var(--glass-fill-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58), 0 20px 50px rgba(31, 41, 55, 0.09);
+  backdrop-filter: blur(20px) saturate(1.18);
 }
 
 .org-detail-card > span {
@@ -960,7 +974,9 @@ p {
 .org-detail-grid div {
   padding: 13px 14px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  background: var(--glass-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .org-detail-grid b,
@@ -988,7 +1004,10 @@ p {
   border: 1px solid color-mix(in srgb, var(--accent), transparent 72%);
   border-radius: 18px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.88), color-mix(in srgb, var(--accent), white 90%));
+    linear-gradient(135deg, rgba(255, 255, 255, 0.66), color-mix(in srgb, var(--accent), white 88%)),
+    rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px) saturate(1.14);
 }
 
 .workflow-rail div:hover {
@@ -1018,9 +1037,13 @@ p {
   gap: 10px;
   align-items: flex-start;
   padding: 14px 16px;
-  border: 1px solid rgba(0, 166, 200, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 14px;
-  background: rgba(0, 166, 200, 0.06);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(0, 166, 200, 0.08)),
+    rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px) saturate(1.12);
 }
 
 .branch-detail li {
@@ -1035,9 +1058,13 @@ p {
   display: flex;
   gap: 14px;
   padding: 18px;
-  border: 1px solid rgba(193, 18, 31, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.48);
   border-radius: 16px;
-  background: rgba(193, 18, 31, 0.06);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(193, 18, 31, 0.08)),
+    rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  backdrop-filter: blur(14px) saturate(1.1);
 }
 
 .case-card p {
@@ -1073,10 +1100,12 @@ p {
 .feedback-form textarea,
 .quiz-screen input {
   width: 100%;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--glass-fill);
   color: var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(14px) saturate(1.1);
 }
 
 .feedback-form select,
@@ -1100,8 +1129,10 @@ p {
   overflow: auto;
   padding: 12px;
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.52);
-  box-shadow: 0 18px 44px rgba(31, 41, 55, 0.08);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(22px) saturate(1.16);
 }
 
 .feedback-list-head {
@@ -1115,7 +1146,7 @@ p {
   padding: 2px 2px 8px;
   border: 0;
   border-radius: 0;
-  background: rgba(255, 255, 255, 0.84);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.24));
   box-shadow: none;
   backdrop-filter: blur(18px);
 }
@@ -1137,10 +1168,11 @@ p {
 
 .feedback-item {
   padding: 16px;
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: none;
+  background: var(--glass-fill-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.54);
+  backdrop-filter: blur(18px) saturate(1.14);
 }
 
 .feedback-meta {
@@ -1196,7 +1228,8 @@ p {
   min-height: 34px;
   padding: 0 12px;
   border-radius: 999px;
-  background: rgba(31, 41, 55, 0.06);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
   color: var(--ink);
   cursor: pointer;
   font-size: 0.82rem;
@@ -1209,13 +1242,15 @@ p {
 }
 
 .feedback-actions button:disabled:hover {
-  background: rgba(31, 41, 55, 0.06);
+  background: var(--glass-fill);
   color: var(--ink);
 }
 
 .feedback-actions button:hover,
 .card-head button:hover {
-  background: rgba(193, 18, 31, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(193, 18, 31, 0.08)),
+    rgba(255, 255, 255, 0.16);
   color: var(--red);
 }
 
@@ -1227,9 +1262,11 @@ p {
   min-height: 32px;
   margin-top: 10px;
   padding: 0 11px;
-  border: 1px solid rgba(193, 18, 31, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.48);
   border-radius: 999px;
-  background: rgba(193, 18, 31, 0.07);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(193, 18, 31, 0.08)),
+    rgba(255, 255, 255, 0.14);
   color: var(--red);
   cursor: pointer;
   font-size: 0.8rem;
@@ -1237,25 +1274,32 @@ p {
 }
 
 .feedback-delete:hover {
-  background: rgba(193, 18, 31, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(193, 18, 31, 0.14)),
+    rgba(255, 255, 255, 0.18);
 }
 
 .final-status {
   margin-top: 12px;
   padding: 8px 10px;
   border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
   font-size: 0.88rem;
   font-weight: 900;
   line-height: 1.45;
 }
 
 .final-status.accepted {
-  background: rgba(5, 122, 85, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(5, 122, 85, 0.1)),
+    rgba(255, 255, 255, 0.14);
   color: #057a55;
 }
 
 .final-status.explained {
-  background: rgba(193, 18, 31, 0.1);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(193, 18, 31, 0.1)),
+    rgba(255, 255, 255, 0.14);
   color: var(--red);
 }
 
@@ -1273,7 +1317,10 @@ p {
   padding: 8px 10px;
   border-left: 3px solid var(--cyan);
   border-radius: 10px;
-  background: rgba(0, 166, 200, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(0, 166, 200, 0.08)),
+    rgba(255, 255, 255, 0.12);
   font-size: 0.86rem;
 }
 
@@ -1288,7 +1335,8 @@ p {
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgba(31, 41, 55, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  background: var(--glass-fill);
   color: var(--muted);
   font-size: 0.74rem;
   font-weight: 900;
@@ -1296,18 +1344,18 @@ p {
 }
 
 .db-status.connected {
-  background: rgba(5, 122, 85, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(5, 122, 85, 0.12));
   color: #057a55;
 }
 
 .db-status.connecting {
-  background: rgba(212, 160, 23, 0.14);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(212, 160, 23, 0.14));
   color: #9a6a00;
 }
 
 .db-status.error,
 .db-status.missing {
-  background: rgba(193, 18, 31, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(193, 18, 31, 0.1));
   color: var(--red);
 }
 
@@ -1355,9 +1403,11 @@ p {
   justify-content: space-between;
   gap: 12px;
   padding: 13px 14px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--glass-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44);
+  backdrop-filter: blur(14px) saturate(1.1);
 }
 
 .rank-row span {
@@ -1431,18 +1481,22 @@ p {
 .option-grid button {
   min-height: 62px;
   padding: 14px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--glass-fill);
   color: var(--ink);
   cursor: pointer;
   font-weight: 850;
   text-align: left;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  backdrop-filter: blur(16px) saturate(1.12);
 }
 
 .option-grid button:hover {
   border-color: var(--cyan);
-  background: rgba(0, 166, 200, 0.08);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(0, 166, 200, 0.1)),
+    rgba(255, 255, 255, 0.18);
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(0, 166, 200, 0.1);
 }
@@ -1508,7 +1562,8 @@ p {
   grid-template-columns: 1fr 1.2fr 1.4fr;
   gap: 20px;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .table-row:last-child {
@@ -1517,7 +1572,9 @@ p {
 
 .table-row.head {
   color: var(--red);
-  background: rgba(193, 18, 31, 0.07);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(193, 18, 31, 0.08)),
+    rgba(255, 255, 255, 0.18);
   font-weight: 950;
 }
 
@@ -1531,11 +1588,15 @@ p {
   align-items: center;
   gap: 7px;
   padding: 9px 13px;
-  border: 1px solid rgba(0, 166, 200, 0.22);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  background: rgba(0, 166, 200, 0.08);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(0, 166, 200, 0.08)),
+    rgba(255, 255, 255, 0.14);
   color: #007f98;
   font-weight: 850;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px) saturate(1.1);
 }
 
 .game-page {
@@ -1624,12 +1685,14 @@ p {
   gap: 7px;
   min-height: 36px;
   padding: 0 12px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.68);
+  background: var(--glass-fill);
   font-size: 0.86rem;
   font-weight: 850;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44);
+  backdrop-filter: blur(14px) saturate(1.1);
 }
 
 .game-rank {
