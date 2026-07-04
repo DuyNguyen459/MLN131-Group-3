@@ -75,7 +75,7 @@ const officialNotes = [
 const branchVerificationContent = {
   chinhphu: {
     title: 'Chính phủ hành động, Chính phủ phục vụ',
-    lead: 'Đề án 06 và Chiến lược Chuyển đổi số quốc gia đang hiển thị trên giao diện của nhóm là minh chứng cho cách Chính phủ cụ thể hóa pháp luật thành dịch vụ phục vụ người dân.',
+  
     points: [
       ['Cụ thể hóa pháp luật', 'Sau khi Quốc hội thông qua Luật Căn cước và Luật Cư trú, Chính phủ ban hành nghị định, chỉ đạo và hệ thống hướng dẫn thực thi.'],
       ['Số hóa dữ liệu dân cư', 'Dữ liệu dân cư được kết nối, chuẩn hóa và khai thác để cắt giảm hàng trăm thủ tục rườm rà.'],
@@ -703,7 +703,7 @@ function PartySection() {
         <div>
           <span className="eyebrow red">Điều 4 Hiến pháp 2013</span>
           <h2>Đảng lãnh đạo bằng đường lối, Nhà nước quản lý bằng pháp luật</h2>
-          <p className="lead">Từ định hướng chính trị đến thể chế hóa bằng pháp luật, phần này làm rõ cách vai trò lãnh đạo được đặt trong khuôn khổ Hiến pháp và pháp luật.</p>
+         
         </div>
         <div className="glass-card party-panel">
           {partyMechanisms.map((item, index) => (
@@ -742,7 +742,6 @@ function BranchSourceContent({ activeId }) {
   if (content) {
     return (
       <div className="source-evidence-card">
-        <span className="source-evidence-kicker">Ghi chú kiểm chứng</span>
         <h4>{content.title}</h4>
         <p className="source-evidence-lead">{content.lead}</p>
         <div className="source-evidence-grid">
@@ -793,7 +792,7 @@ function BranchesSection() {
       <div className="branch-mode">
         <button className={view === 'structure' ? 'active' : ''} onClick={() => setView('structure')}>Cấu trúc</button>
         <button className={view === 'workflow' ? 'active' : ''} onClick={() => setView('workflow')}>Luồng vận hành</button>
-        <button className={view === 'sources' ? 'active' : ''} onClick={() => setView('sources')}>Ghi chú kiểm chứng</button>
+        <button className={view === 'sources' ? 'active' : ''} onClick={() => setView('sources')}>Thực tế</button>
       </div>
       <AnimatePresence mode="wait">
         <motion.div key={`${active.id}-${view}`} className="branch-showcase glass-card" style={{ '--accent': active.color }} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}>
