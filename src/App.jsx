@@ -75,7 +75,7 @@ const officialNotes = [
 const branchVerificationContent = {
   chinhphu: {
     title: 'Chính phủ hành động, Chính phủ phục vụ',
-  
+
     points: [
       ['Cụ thể hóa pháp luật', 'Sau khi Quốc hội thông qua Luật Căn cước và Luật Cư trú, Chính phủ ban hành nghị định, chỉ đạo và hệ thống hướng dẫn thực thi.'],
       ['Số hóa dữ liệu dân cư', 'Dữ liệu dân cư được kết nối, chuẩn hóa và khai thác để cắt giảm hàng trăm thủ tục rườm rà.'],
@@ -671,7 +671,7 @@ function PartySection() {
         <div>
           <span className="eyebrow red">Điều 4 Hiến pháp 2013</span>
           <h2>Đảng lãnh đạo bằng đường lối, Nhà nước quản lý bằng pháp luật</h2>
-         
+
         </div>
         <div className="glass-card party-panel">
           {partyMechanisms.map((item, index) => (
@@ -749,7 +749,7 @@ function BranchesSection() {
       <div className="section-head center">
         <span className="eyebrow">Bộ máy nhà nước - cập nhật tháng 7/2026</span>
         <h2>Quyền lực nhà nước là thống nhất</h2>
-       
+
       </div>
       <div className="branch-tabs">
         {stateBranches.map((branch) => {
@@ -864,7 +864,7 @@ function FeedbackPortal() {
       <div className="section-head">
         <span className="eyebrow cyan">Cơ chế giải trình</span>
         <h2>Cổng tiếp nhận ý kiến Nhân dân</h2>
-        
+
       </div>
       <div className="feedback-layout">
         <div className="glass-card feedback-form">
@@ -1160,8 +1160,8 @@ function GameApp() {
                   else if (option === currentSelection) btnClass = "wrong";
                 }
                 return (
-                  <button 
-                    key={option} 
+                  <button
+                    key={option}
                     onClick={() => handleSelect(option)}
                     className={btnClass}
                     disabled={isShowingAnswer}
